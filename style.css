@@ -1,0 +1,129 @@
+:root {
+    --accent: #ff0000;
+    --black: #000000;
+    --white: #ffffff;
+    --dark-bg: #111111;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--white);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    overflow: hidden;
+}
+
+header {
+    border-bottom: 4px solid var(--white);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Общие правила для кнопок в шапке */
+.header-btn {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 900;
+    padding: 8px 16px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    min-width: 140px;
+    box-sizing: border-box;
+}
+
+.logo-btn {
+    background: var(--white);
+    color: var(--black);
+}
+
+.donate-btn {
+    background: var(--accent);
+    color: var(--white);
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#timer {
+    font-size: 15vw;
+    font-weight: 900;
+    line-height: 0.8;
+    margin-bottom: 40px;
+    font-variant-numeric: tabular-nums;
+    color: var(--white);
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 600px;
+    border: 2px solid var(--white);
+}
+
+.controls button {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    padding: 20px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.controls button:first-child {
+    border-right: 2px solid var(--white);
+}
+
+.controls button:hover {
+    background: var(--white);
+    color: var(--black);
+}
+
+.settings {
+    margin-top: 40px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+input {
+    background: transparent;
+    color: var(--white);
+    border: none;
+    border-bottom: 2px solid var(--white);
+    font-weight: 900;
+    font-size: 1.2rem;
+    width: 60px;
+    text-align: center;
+    outline: none;
+    margin-left: 10px;
+}
+
+footer {
+    padding: 20px;
+    font-size: 10px;
+    border-top: 1px solid #333;
+    text-align: center;
+    color: #555;
+}
+
+.is-running #timer {
+    color: var(--accent);
+}
