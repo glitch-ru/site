@@ -23,20 +23,17 @@ header {
     padding: 20px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Центрируем элементы по вертикали */
 }
 
-/* Новые стили для текстовой ссылки */
+/* Настройки для логотипа "Медиазона" */
 .logo-link {
     color: var(--white);
-    text-decoration: none;
-    font-size: 24px;
+    text-decoration: none; /* Убираем подчеркивание */
+    font-size: 42px; /* Размер шрифта под высоту кнопки (шрифт 18px + отступы 16px + высота строки) */
     font-weight: 900;
-    text-transform: none; /* Отменяет uppercase из body, сохраняя исходный регистр */
-}
-
-.logo-link:hover {
-    text-decoration: underline; /* Добавляет подчеркивание при наведении */
+    text-transform: none !important; /* Строго сохраняем регистр букв */
+    line-height: 1;
 }
 
 .header-btn {
@@ -122,15 +119,16 @@ input {
     margin-left: 10px;
 }
 
-/* Обновленные стили футера */
+/* Улучшенная читаемость футера */
 footer {
-    padding: 20px;
-    font-size: 14px; /* Увеличен размер шрифта */
-    line-height: 1.5; /* Улучшена читабельность строк */
-    letter-spacing: normal; /* Отменено сужение букв */
+    padding: 24px;
+    font-size: 14px; 
+    line-height: 1.6;
+    letter-spacing: 0.05em;
     border-top: 4px solid var(--white);
     text-align: center;
-    color: #e0e0e0; /* Слегка приглушенный цвет для комфорта глаз */
+    color: #cccccc;
+    text-transform: none; /* Отменяем капс для футера для лучшей читаемости длинного текста */
 }
 
 .is-running #timer {
