@@ -119,9 +119,9 @@ input {
 footer {
     padding: 20px;
     font-size: 10px;
-    border-top: 1px solid #333;
+    border-top: 1px solid var(--white);
     text-align: center;
-    color: #555;
+    color: #var(--white);
 }
 
 .is-running #timer {
