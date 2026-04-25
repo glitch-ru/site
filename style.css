@@ -1,3 +1,18 @@
+/* Подключаем шрифты */
+@font-face {
+    font-family: 'Graphik';
+    src: url('/font/Graphik-Regular-Cy-Web.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik';
+    src: url('/font/Graphik-Regular-Cy-Web.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
 :root {
     --accent: #ff0000;
     --black: #000000;
@@ -6,7 +21,8 @@
 }
 
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* Меняем шрифт на Graphik */
+    font-family: 'Graphik', sans-serif;
     background-color: var(--dark-bg);
     color: var(--white);
     margin: 0;
@@ -26,11 +42,10 @@ header {
     align-items: center;
 }
 
-/* Общие правила для кнопок в шапке */
 .header-btn {
     text-decoration: none;
     font-size: 18px;
-    font-weight: 900;
+    font-weight: bold; /* Использует Graphik Bold */
     padding: 8px 16px;
     display: inline-block;
     border: none;
@@ -61,11 +76,10 @@ main {
 
 #timer {
     font-size: 15vw;
-    font-weight: 900;
+    font-weight: bold; /* Использует Graphik Bold */
     line-height: 0.8;
     margin-bottom: 40px;
     font-variant-numeric: tabular-nums;
-    color: var(--white);
 }
 
 .controls {
@@ -82,7 +96,8 @@ main {
     color: var(--white);
     padding: 20px;
     font-size: 1.2rem;
-    font-weight: 700;
+    font-family: 'Graphik', sans-serif;
+    font-weight: bold;
     cursor: pointer;
     text-transform: uppercase;
 }
@@ -98,7 +113,7 @@ main {
 
 .settings {
     margin-top: 40px;
-    font-weight: 700;
+    font-weight: normal;
     font-size: 0.8rem;
     color: #888;
 }
@@ -108,7 +123,8 @@ input {
     color: var(--white);
     border: none;
     border-bottom: 2px solid var(--white);
-    font-weight: 900;
+    font-family: 'Graphik', sans-serif;
+    font-weight: bold;
     font-size: 1.2rem;
     width: 60px;
     text-align: center;
@@ -119,9 +135,9 @@ input {
 footer {
     padding: 20px;
     font-size: 10px;
-    border-top: 4px solid var(--white);
+    border-top: 1px solid #333;
     text-align: center;
-    color: var(--white);
+    color: #555;
 }
 
 .is-running #timer {
