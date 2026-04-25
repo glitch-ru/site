@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
     text-transform: uppercase;
     letter-spacing: -0.02em;
-    overflow-y: auto; /* Разрешаем прокрутку */
+    overflow-y: auto; /* Включаем прокрутку */
 }
 
 header {
@@ -24,6 +24,10 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    background: var(--dark-bg);
+    z-index: 10;
 }
 
 .logo-link {
@@ -57,20 +61,18 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Центрируем контент по горизонтали */
-    padding: 40px 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-    width: 100%;
+    align-items: center;
+    width: 100%; /* Занимает всю ширину */
 }
 
-/* Стили даты (бывший таймер) */
+/* Настройка даты по центру */
 #timer {
-    font-size: 5rem; /* Увеличенный размер */
+    font-size: 5vw; /* Крупная дата */
     font-weight: 900;
     line-height: 1;
-    margin-bottom: 60px;
+    margin: 40px 0;
     text-align: center;
+    font-variant-numeric: tabular-nums;
     width: 100%;
 }
 
@@ -79,9 +81,12 @@ main {
 }
 
 article {
-    border-bottom: 2px dotted var(--white); /* Точечная линия на всю ширину */
-    padding: 40px 0;
     width: 100%;
+    border-bottom: 2px dotted var(--white); /* Точечная линия */
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 article:last-child {
@@ -89,28 +94,29 @@ article:last-child {
 }
 
 .news-title {
-    font-size: 2.5rem;
+    width: 90%;
+    max-width: 1000px;
+    font-size: 3rem;
     font-weight: 900;
-    margin: 0 0 15px 0;
-    color: var(--white); /* Белый цвет для всех заголовков */
-    text-transform: uppercase;
-    line-height: 1.1;
+    margin: 0 0 20px 0;
     text-align: left;
 }
 
 .news-text {
+    width: 90%;
+    max-width: 1000px;
     font-weight: 400; /* Обычный шрифт */
-    font-size: 1.15rem;
-    line-height: 1.6;
+    font-size: 1.2rem;
+    line-height: 1.5;
     text-transform: none; /* Читаемый регистр */
     letter-spacing: normal;
     color: #cccccc;
     margin: 0;
 }
 
-/* Скрываем ненужные элементы */
+/* Скрываем элементы старого интерфейса */
 .controls, .settings {
-    display: none !important;
+    display: none;
 }
 
 footer {
