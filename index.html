@@ -5,69 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZONE | НОВОСТИ</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Дополнительные стили для трансформации в медиа */
-        
-        body {
-            overflow-y: auto !important; /* Разрешаем прокрутку */
-        }
-
-        main {
-            display: block; /* Убираем центрирование flex для ленты */
-            padding-top: 40px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        #timer {
-            font-size: 2rem !important; /* Уменьшаем размер даты */
-            text-align: left;
-            margin-bottom: 20px;
-            color: var(--white);
-        }
-
-        .news-feed {
-            width: 100%;
-        }
-
-        article {
-            border-bottom: 2px dotted var(--white); /* Точечная линия */
-            padding: 30px 0;
-            width: 100%;
-        }
-
-        article:last-child {
-            border-bottom: none;
-        }
-
-        .news-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-            color: var(--white);
-            text-transform: uppercase;
-            line-height: 1.1;
-        }
-
-        .news-title.accent {
-            color: var(--accent);
-        }
-
-        .news-text {
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-weight: 400; /* Обычный шрифт, не жирный */
-            font-size: 1.1rem;
-            line-height: 1.5;
-            text-transform: none; /* Читаемый регистр */
-            letter-spacing: normal;
-            color: #ccc;
-        }
-
-        /* Скрываем ненужные элементы из старого дизайна */
-        .controls, .settings {
-            display: none !important;
-        }
-    </style>
 </head>
 <body>
 
@@ -82,25 +19,23 @@
 </header>
 
 <main id="main-container">
-    <div id="timer">Загрузка даты...</div>
+    <div id="timer">00.00.0000</div>
     
     <div class="news-feed">
-        
         <article>
-            <h2 class="news-title accent">Срочное обновление системы</h2>
-            <p class="news-text">Инструмент успешно переведен в режим новостной ленты. Весь дизайн теперь управляется через CSS, при этом основные глобальные стили остались нетронутыми. Мы добавили поддержку прокрутки и обновили типографику для лучшего визуального восприятия контента.</p>
+            <h2 class="news-title">Срочное обновление системы</h2>
+            <p class="news-text">Инструмент успешно переведен в режим новостной ленты. Весь дизайн теперь управляется через CSS, при этом основные глобальные стили остались нетронутыми.</p>
         </article>
 
         <article>
             <h2 class="news-title">Аналитика и технологии</h2>
-            <p class="news-text">Минимализм в интерфейсах становится стандартом для современных медиа. Использование точечных разделителей и строгого черного фона подчеркивает серьезность и фокус на текстовой составляющей материалов.</p>
+            <p class="news-text">Минимализм в интерфейсах становится стандартом для современных медиа. Использование точечных разделителей и строгого черного фона подчеркивает серьезность контента.</p>
         </article>
 
         <article>
             <h2 class="news-title">Новый формат вещания</h2>
-            <p class="news-text">Вместо интерактивных кнопок теперь используется классическая структура лонгридов. Это позволяет пользователю потреблять информацию в привычном темпе, используя вертикальную прокрутку страницы.</p>
+            <p class="news-text">Вместо интерактивных кнопок теперь используется классическая структура лонгридов. Это позволяет пользователю потреблять информацию в привычном темпе.</p>
         </article>
-
     </div>
 </main>
 
@@ -114,19 +49,15 @@
             const response = await fetch('https://tools.aimylogic.com/api/now?tz=Europe/Moscow');
             const data = await response.json();
             if (data && data.formatted) {
-                document.getElementById('timer').textContent = data.formatted;
+                // Извлекаем только дату (первые 10 символов: DD.MM.YYYY)
+                document.getElementById('timer').textContent = data.formatted.split(' ')[0];
             }
         } catch (error) {
-            console.error('Ошибка при получении даты:', error);
-            // Фолбэк на системное время, если API недоступно
             const now = new Date();
-            document.getElementById('timer').textContent = now.toLocaleString('ru-RU');
+            document.getElementById('timer').textContent = now.toLocaleDateString('ru-RU');
         }
     }
-
     updateDate();
-    // Обновляем дату раз в минуту
-    setInterval(updateDate, 60000);
 </script>
 
 </body>
