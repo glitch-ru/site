@@ -19,7 +19,7 @@ body {
 }
 
 header {
-    border-bottom: 4px solid var(--white);
+    border-bottom: 2px solid var(--white);
     padding: 20px;
     display: flex;
     justify-content: space-between;
@@ -125,7 +125,7 @@ footer {
     font-size: 14px; 
     line-height: 1.6;
     letter-spacing: 0.05em;
-    border-top: 4px solid var(--white);
+    border-top: 2px solid var(--white);
     text-align: center;
     color: #cccccc;
     text-transform: none; /* Отменяем капс для футера для лучшей читаемости длинного текста */
