@@ -19,17 +19,17 @@
 </header>
 
 <main id="main-container">
-    <div id="timer">00.00.0000</div>
+    <div id="timer">Загрузка...</div>
     
     <div class="news-feed">
         <article>
             <h2 class="news-title">Срочное обновление системы</h2>
-            <p class="news-text">Инструмент успешно переведен в режим новостной ленты. Весь дизайн теперь управляется через CSS, при этом основные глобальные стили остались нетронутыми.</p>
+            <p class="news-text">Инструмент успешно переведен в режим новостной ленты. Весь дизайн теперь полностью управляется через внешний CSS файл. Мы добавили поддержку бесконечной прокрутки и обновили типографику.</p>
         </article>
 
         <article>
             <h2 class="news-title">Аналитика и технологии</h2>
-            <p class="news-text">Минимализм в интерфейсах становится стандартом для современных медиа. Использование точечных разделителей и строгого черного фона подчеркивает серьезность контента.</p>
+            <p class="news-text">Минимализм в интерфейсах становится стандартом для современных медиа. Использование точечных разделителей от края до края экрана подчеркивает газетную стилистику в цифровой среде.</p>
         </article>
 
         <article>
@@ -49,8 +49,9 @@
             const response = await fetch('https://tools.aimylogic.com/api/now?tz=Europe/Moscow');
             const data = await response.json();
             if (data && data.formatted) {
-                // Извлекаем только дату (первые 10 символов: DD.MM.YYYY)
-                document.getElementById('timer').textContent = data.formatted.split(' ')[0];
+                // Извлекаем только дату (первые 10 символов: ДД.ММ.ГГГГ)
+                const onlyDate = data.formatted.split(' ')[0];
+                document.getElementById('timer').textContent = onlyDate;
             }
         } catch (error) {
             const now = new Date();
