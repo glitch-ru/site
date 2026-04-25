@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZONE.TIMER</title>
     <style>
-        /* Стиль в духе zone.media */
         :root {
-            --accent: #ff0000; /* Фирменный красный */
+            --accent: #ff0000;
             --black: #000000;
             --white: #ffffff;
-            --gray: #f4f4f4;
         }
 
         body {
@@ -21,16 +19,26 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            text-transform: uppercase; /* Текст в верхнем регистре для брутализма */
+            text-transform: uppercase;
             letter-spacing: -0.02em;
         }
 
         header {
             border-bottom: 4px solid var(--black);
-            padding: 20px;
+            padding: 15px 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* Распределяет лого и кнопку по краям */
             align-items: center;
+        }
+
+        /* Стиль для ссылки-логотипа */
+        .logo-link {
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .logo-link:hover {
+            opacity: 0.8;
         }
 
         .logo {
@@ -40,6 +48,22 @@
             color: var(--white);
             padding: 5px 10px;
             display: inline-block;
+        }
+
+        /* Красная кнопка в углу */
+        .donate-btn {
+            background: var(--accent);
+            color: var(--white);
+            text-decoration: none;
+            padding: 8px 15px;
+            font-weight: 900;
+            font-size: 14px;
+            border: none;
+            transition: transform 0.1s;
+        }
+
+        .donate-btn:hover {
+            transform: scale(1.05);
         }
 
         main {
@@ -52,23 +76,22 @@
         }
 
         #timer {
-            font-size: 15vw; /* Огромные цифры */
+            font-size: 15vw;
             font-weight: 900;
             line-height: 0.8;
             margin-bottom: 40px;
-            font-variant-numeric: tabular-nums; /* Чтобы цифры не прыгали */
+            font-variant-numeric: tabular-nums;
         }
 
         .controls {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0;
-            border: 2px solid var(--black);
             width: 100%;
             max-width: 600px;
+            border: 2px solid var(--black);
         }
 
-        button {
+        .controls button {
             background: transparent;
             border: none;
             padding: 20px;
@@ -76,22 +99,15 @@
             font-weight: 700;
             cursor: pointer;
             text-transform: uppercase;
-            transition: all 0.1s ease;
         }
 
-        button:first-child {
+        .controls button:first-child {
             border-right: 2px solid var(--black);
         }
 
-        button:hover {
+        .controls button:hover {
             background: var(--black);
             color: var(--white);
-        }
-
-        #start.active {
-            background: var(--accent);
-            color: var(--white);
-            border-color: var(--accent);
         }
 
         .settings {
@@ -103,7 +119,6 @@
         input {
             border: none;
             border-bottom: 2px solid var(--black);
-            font-family: inherit;
             font-weight: 900;
             font-size: 1.2rem;
             width: 60px;
@@ -118,17 +133,19 @@
             text-align: center;
         }
 
-        /* Анимация мигания для акцента */
-        .is-running #timer {
-            color: var(--accent);
-        }
+        .is-running #timer { color: var(--accent); }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">ZONE.TIMER</div>
-    <div>СЕГОДНЯ: <span id="date"></span></div>
+    <a href="https://4726.vercel.app" class="logo-link">
+        <div class="logo">ZONE.TIMER</div>
+    </a>
+    
+    <a href="https://4726.vercel.app/donate" class="donate-btn">
+        ПОДДЕРЖАТЬ
+    </a>
 </header>
 
 <main id="main-container">
@@ -140,13 +157,12 @@
     </div>
 
     <div class="settings">
-        УСТАНОВИТЬ ЛИМИТ: 
-        <input type="number" id="minutesInput" value="25" min="1"> МИНУТ
+        ЛИМИТ: <input type="number" id="minutesInput" value="25" min="1"> МИНУТ
     </div>
 </main>
 
 <footer>
-    ДАННЫЙ ТАЙМЕР СОЗДАН В ЦЕЛЯХ ПОВЫШЕНИЯ ЭФФЕКТИВНОСТИ РАБОТЫ
+    ДАННЫЙ ИНСТРУМЕНТ ПРЕДОСТАВЛЕН ДЛЯ ПУБЛИЧНОГО ИСПОЛЬЗОВАНИЯ
 </footer>
 
 <script>
@@ -159,9 +175,6 @@
     const resetBtn = document.getElementById('reset');
     const minutesInput = document.getElementById('minutesInput');
     const mainContainer = document.getElementById('main-container');
-
-    // Дата в хедере
-    document.getElementById('date').textContent = new Date().toLocaleDateString('ru-RU');
 
     const savedTime = localStorage.getItem('zoneTime') || 25;
     minutesInput.value = savedTime;
