@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZONE.TIMER</title>
+    <title>ZONE</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
     <a href="https://4726.vercel.app" class="header-btn logo-btn">
-        ZONE.TIMER
+        ZONE
     </a>
     
     <a href="https://4726.vercel.app/donate" class="header-btn donate-btn">
@@ -56,7 +56,7 @@
         const secs = timeLeft % 60;
         const timeString = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         timerDisplay.textContent = timeString;
-        document.title = isRunning ? `[${timeString}]` : 'ZONE.TIMER';
+        // Строка обновления заголовка удалена
     }
 
     function toggleTimer() {
