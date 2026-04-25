@@ -9,12 +9,13 @@
             --accent: #ff0000;
             --black: #000000;
             --white: #ffffff;
+            --dark-bg: #111111; /* Глубокий темный фон */
         }
 
         body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: var(--white);
-            color: var(--black);
+            background-color: var(--dark-bg);
+            color: var(--white);
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -24,46 +25,37 @@
         }
 
         header {
-            border-bottom: 4px solid var(--black);
-            padding: 15px 20px;
+            border-bottom: 4px solid var(--white);
+            padding: 20px;
             display: flex;
-            justify-content: space-between; /* Распределяет лого и кнопку по краям */
+            justify-content: space-between;
             align-items: center;
         }
 
-        /* Стиль для ссылки-логотипа */
-        .logo-link {
+        /* Общие правила для кнопок в шапке */
+        .header-btn {
             text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .logo-link:hover {
-            opacity: 0.8;
-        }
-
-        .logo {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 900;
-            background: var(--black);
-            color: var(--white);
-            padding: 5px 10px;
+            padding: 8px 16px;
             display: inline-block;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            min-width: 140px; /* Одинаковая минимальная ширина */
+            box-sizing: border-box;
         }
 
-        /* Красная кнопка в углу */
+        /* Логотип (черная кнопка) */
+        .logo-btn {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        /* Кнопка поддержки (красная кнопка) */
         .donate-btn {
             background: var(--accent);
             color: var(--white);
-            text-decoration: none;
-            padding: 8px 15px;
-            font-weight: 900;
-            font-size: 14px;
-            border: none;
-            transition: transform 0.1s;
-        }
-
-        .donate-btn:hover {
-            transform: scale(1.05);
         }
 
         main {
@@ -81,6 +73,7 @@
             line-height: 0.8;
             margin-bottom: 40px;
             font-variant-numeric: tabular-nums;
+            color: var(--white);
         }
 
         .controls {
@@ -88,12 +81,13 @@
             grid-template-columns: 1fr 1fr;
             width: 100%;
             max-width: 600px;
-            border: 2px solid var(--black);
+            border: 2px solid var(--white);
         }
 
         .controls button {
             background: transparent;
             border: none;
+            color: var(--white);
             padding: 20px;
             font-size: 1.2rem;
             font-weight: 700;
@@ -102,48 +96,56 @@
         }
 
         .controls button:first-child {
-            border-right: 2px solid var(--black);
+            border-right: 2px solid var(--white);
         }
 
         .controls button:hover {
-            background: var(--black);
-            color: var(--white);
+            background: var(--white);
+            color: var(--black);
         }
 
         .settings {
             margin-top: 40px;
             font-weight: 700;
             font-size: 0.8rem;
+            color: #888;
         }
 
         input {
+            background: transparent;
+            color: var(--white);
             border: none;
-            border-bottom: 2px solid var(--black);
+            border-bottom: 2px solid var(--white);
             font-weight: 900;
             font-size: 1.2rem;
             width: 60px;
             text-align: center;
             outline: none;
+            margin-left: 10px;
         }
 
         footer {
             padding: 20px;
             font-size: 10px;
-            border-top: 1px solid var(--black);
+            border-top: 1px solid #333;
             text-align: center;
+            color: #555;
         }
 
-        .is-running #timer { color: var(--accent); }
+        /* Эффект при работе таймера */
+        .is-running #timer {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <a href="https://4726.vercel.app" class="logo-link">
-        <div class="logo">ZONE.TIMER</div>
+    <a href="https://4726.vercel.app" class="header-btn logo-btn">
+        ZONE.TIMER
     </a>
     
-    <a href="https://4726.vercel.app/donate" class="donate-btn">
+    <a href="https://4726.vercel.app/donate" class="header-btn donate-btn">
         ПОДДЕРЖАТЬ
     </a>
 </header>
