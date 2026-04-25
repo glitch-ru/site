@@ -12,10 +12,10 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     text-transform: uppercase;
     letter-spacing: -0.02em;
-    overflow: hidden;
+    overflow-y: auto; /* Разрешаем прокрутку */
 }
 
 header {
@@ -23,16 +23,15 @@ header {
     padding: 20px;
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Центрируем элементы по вертикали */
+    align-items: center;
 }
 
-/* Настройки для логотипа "Медиазона" */
 .logo-link {
     color: var(--white);
-    text-decoration: none; /* Убираем подчеркивание */
-    font-size: 35px; /* Размер шрифта под высоту кнопки (шрифт 18px + отступы 16px + высота строки) */
+    text-decoration: none;
+    font-size: 35px;
     font-weight: 900;
-    text-transform: none !important; /* Строго сохраняем регистр букв */
+    text-transform: none !important;
     line-height: 1;
 }
 
@@ -58,68 +57,62 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-#timer {
-    font-size: 15vw;
-    font-weight: 900;
-    line-height: 0.8;
-    margin-bottom: 40px;
-    font-variant-numeric: tabular-nums;
-}
-
-.controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    align-items: center; /* Центрируем контент по горизонтали */
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
     width: 100%;
-    max-width: 600px;
-    border: 2px solid var(--white);
 }
 
-.controls button {
-    background: transparent;
-    border: none;
-    color: var(--white);
-    padding: 20px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    cursor: pointer;
-    text-transform: uppercase;
-}
-
-.controls button:first-child {
-    border-right: 2px solid var(--white);
-}
-
-.controls button:hover {
-    background: var(--white);
-    color: var(--black);
-}
-
-.settings {
-    margin-top: 40px;
-    font-weight: 700;
-    font-size: 0.8rem;
-    color: #888;
-}
-
-input {
-    background: transparent;
-    color: var(--white);
-    border: none;
-    border-bottom: 2px solid var(--white);
+/* Стили даты (бывший таймер) */
+#timer {
+    font-size: 5rem; /* Увеличенный размер */
     font-weight: 900;
-    font-size: 1.2rem;
-    width: 60px;
+    line-height: 1;
+    margin-bottom: 60px;
     text-align: center;
-    outline: none;
-    margin-left: 10px;
+    width: 100%;
 }
 
-/* Улучшенная читаемость футера */
+.news-feed {
+    width: 100%;
+}
+
+article {
+    border-bottom: 2px dotted var(--white); /* Точечная линия на всю ширину */
+    padding: 40px 0;
+    width: 100%;
+}
+
+article:last-child {
+    border-bottom: none;
+}
+
+.news-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin: 0 0 15px 0;
+    color: var(--white); /* Белый цвет для всех заголовков */
+    text-transform: uppercase;
+    line-height: 1.1;
+    text-align: left;
+}
+
+.news-text {
+    font-weight: 400; /* Обычный шрифт */
+    font-size: 1.15rem;
+    line-height: 1.6;
+    text-transform: none; /* Читаемый регистр */
+    letter-spacing: normal;
+    color: #cccccc;
+    margin: 0;
+}
+
+/* Скрываем ненужные элементы */
+.controls, .settings {
+    display: none !important;
+}
+
 footer {
     padding: 24px;
     font-size: 14px; 
@@ -128,9 +121,5 @@ footer {
     border-top: 1px solid var(--white);
     text-align: center;
     color: #cccccc;
-    text-transform: none; /* Отменяем капс для футера для лучшей читаемости длинного текста */
-}
-
-.is-running #timer {
-    color: var(--accent);
+    text-transform: none;
 }
