@@ -9,7 +9,7 @@
 <body>
 
 <header>
-    <a href="https://4726.vercel.app" class="header-btn logo-btn">
+    <a href="https://4726.vercel.app" class="logo-link">
         Медиазона
     </a>
     
@@ -56,7 +56,6 @@
         const secs = timeLeft % 60;
         const timeString = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         timerDisplay.textContent = timeString;
-        // Строка обновления заголовка удалена
     }
 
     function toggleTimer() {
