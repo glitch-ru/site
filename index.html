@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZONE</title>
+    <title>ZONE | НОВОСТИ</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,15 +19,34 @@
 </header>
 
 <main id="main-container">
-    <div id="timer">25:00</div>
+    <div id="timer" style="font-size: 8vw;">ГЛАВНОЕ</div>
     
-    <div class="controls">
-        <button id="start">СТАРТ</button>
-        <button id="reset">СБРОС</button>
+    <div id="news-feed" style="width: 100%; max-width: 800px; text-transform: none;">
+        
+        <article style="border-bottom: 1px solid var(--white); padding: 20px 0;">
+            <h2 style="margin: 0; color: var(--accent); font-weight: 900;">СРОЧНО: ОБНОВЛЕНИЕ СИСТЕМЫ</h2>
+            <p style="text-transform: none; letter-spacing: normal; color: var(--white);">Инструмент переведен в режим новостной ленты. Все функции таймера заменены на информационные блоки.</p>
+        </article>
+
+        <article style="border-bottom: 1px solid var(--white); padding: 20px 0;">
+            <h2 style="margin: 0; font-weight: 900;">АНАЛИТИКА: ПОЧЕМУ ЭТО ВАЖНО</h2>
+            <p style="text-transform: none; letter-spacing: normal; color: var(--white);">Минималистичный дизайн позволяет сфокусироваться на тексте, не отвлекаясь на лишние элементы интерфейса.</p>
+        </article>
+
+        <article style="padding: 20px 0;">
+            <h2 style="margin: 0; font-weight: 900;">ТЕХНОЛОГИИ И ДИЗАЙН</h2>
+            <p style="text-transform: none; letter-spacing: normal; color: var(--white);">Использование CSS-переменных позволяет менять тему сайта мгновенно, сохраняя единообразие стиля.</p>
+        </article>
+
+    </div>
+
+    <div class="controls" style="margin-top: 40px;">
+        <button onclick="location.reload()">ОБНОВИТЬ</button>
+        <button onclick="window.scrollTo(0,0)">НАВЕРХ</button>
     </div>
 
     <div class="settings">
-        ЛИМИТ: <input type="number" id="minutesInput" value="25" min="1"> МИНУТ
+        ПОДПИСКА: <input type="email" id="emailInput" placeholder="EMAIL" style="width: 150px; text-transform: none;">
     </div>
 </main>
 
@@ -36,63 +55,10 @@
 </footer>
 
 <script>
-    let timeLeft;
-    let timerId = null;
-    let isRunning = false;
-
-    const timerDisplay = document.getElementById('timer');
-    const startBtn = document.getElementById('start');
-    const resetBtn = document.getElementById('reset');
-    const minutesInput = document.getElementById('minutesInput');
-    const mainContainer = document.getElementById('main-container');
-
-    const savedTime = localStorage.getItem('zoneTime') || 25;
-    minutesInput.value = savedTime;
-    timeLeft = savedTime * 60;
-    updateDisplay();
-
-    function updateDisplay() {
-        const mins = Math.floor(timeLeft / 60);
-        const secs = timeLeft % 60;
-        const timeString = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        timerDisplay.textContent = timeString;
-    }
-
-    function toggleTimer() {
-        if (isRunning) {
-            clearInterval(timerId);
-            startBtn.textContent = 'ПРОДОЛЖИТЬ';
-            mainContainer.classList.remove('is-running');
-        } else {
-            startBtn.textContent = 'ПАУЗА';
-            mainContainer.classList.add('is-running');
-            timerId = setInterval(() => {
-                timeLeft--;
-                updateDisplay();
-                if (timeLeft <= 0) {
-                    clearInterval(timerId);
-                    alert('ВРЕМЯ ВЫШЛО');
-                    resetTimer();
-                }
-            }, 1000);
-        }
-        isRunning = !isRunning;
-    }
-
-    function resetTimer() {
-        clearInterval(timerId);
-        isRunning = false;
-        timeLeft = minutesInput.value * 60;
-        startBtn.textContent = 'СТАРТ';
-        mainContainer.classList.remove('is-running');
-        updateDisplay();
-    }
-
-    startBtn.addEventListener('click', toggleTimer);
-    resetBtn.addEventListener('click', resetTimer);
-    minutesInput.addEventListener('change', () => {
-        localStorage.setItem('zoneTime', minutesInput.value);
-        resetTimer();
+    // Скрипт таймера удален за ненадобностью. 
+    // Можно добавить простую логику для input, если нужно.
+    document.getElementById('emailInput')?.addEventListener('change', function() {
+        alert('Спасибо за подписку!');
     });
 </script>
 
