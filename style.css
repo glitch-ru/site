@@ -26,6 +26,19 @@ header {
     align-items: center;
 }
 
+/* Новые стили для текстовой ссылки */
+.logo-link {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: none; /* Отменяет uppercase из body, сохраняя исходный регистр */
+}
+
+.logo-link:hover {
+    text-decoration: underline; /* Добавляет подчеркивание при наведении */
+}
+
 .header-btn {
     text-decoration: none;
     font-size: 18px;
@@ -37,11 +50,6 @@ header {
     text-align: center;
     min-width: 140px;
     box-sizing: border-box;
-}
-
-.logo-btn {
-    background: var(--white);
-    color: var(--black);
 }
 
 .donate-btn {
@@ -114,12 +122,15 @@ input {
     margin-left: 10px;
 }
 
+/* Обновленные стили футера */
 footer {
     padding: 20px;
-    font-size: 10px;
+    font-size: 14px; /* Увеличен размер шрифта */
+    line-height: 1.5; /* Улучшена читабельность строк */
+    letter-spacing: normal; /* Отменено сужение букв */
     border-top: 4px solid var(--white);
     text-align: center;
-    color: var(--white);
+    color: #e0e0e0; /* Слегка приглушенный цвет для комфорта глаз */
 }
 
 .is-running #timer {
