@@ -5,6 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZONE | НОВОСТИ</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Дополнительные стили для трансформации в медиа */
+        
+        body {
+            overflow-y: auto !important; /* Разрешаем прокрутку */
+        }
+
+        main {
+            display: block; /* Убираем центрирование flex для ленты */
+            padding-top: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        #timer {
+            font-size: 2rem !important; /* Уменьшаем размер даты */
+            text-align: left;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .news-feed {
+            width: 100%;
+        }
+
+        article {
+            border-bottom: 2px dotted var(--white); /* Точечная линия */
+            padding: 30px 0;
+            width: 100%;
+        }
+
+        article:last-child {
+            border-bottom: none;
+        }
+
+        .news-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: var(--white);
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .news-title.accent {
+            color: var(--accent);
+        }
+
+        .news-text {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: 400; /* Обычный шрифт, не жирный */
+            font-size: 1.1rem;
+            line-height: 1.5;
+            text-transform: none; /* Читаемый регистр */
+            letter-spacing: normal;
+            color: #ccc;
+        }
+
+        /* Скрываем ненужные элементы из старого дизайна */
+        .controls, .settings {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -19,34 +82,25 @@
 </header>
 
 <main id="main-container">
-    <div id="timer" style="font-size: 8vw;">ГЛАВНОЕ</div>
+    <div id="timer">Загрузка даты...</div>
     
-    <div id="news-feed" style="width: 100%; max-width: 800px; text-transform: none;">
+    <div class="news-feed">
         
-        <article style="border-bottom: 1px solid var(--white); padding: 20px 0;">
-            <h2 style="margin: 0; color: var(--accent); font-weight: 900;">СРОЧНО: ОБНОВЛЕНИЕ СИСТЕМЫ</h2>
-            <p style="text-transform: none; letter-spacing: normal; color: var(--white);">Инструмент переведен в режим новостной ленты. Все функции таймера заменены на информационные блоки.</p>
+        <article>
+            <h2 class="news-title accent">Срочное обновление системы</h2>
+            <p class="news-text">Инструмент успешно переведен в режим новостной ленты. Весь дизайн теперь управляется через CSS, при этом основные глобальные стили остались нетронутыми. Мы добавили поддержку прокрутки и обновили типографику для лучшего визуального восприятия контента.</p>
         </article>
 
-        <article style="border-bottom: 1px solid var(--white); padding: 20px 0;">
-            <h2 style="margin: 0; font-weight: 900;">АНАЛИТИКА: ПОЧЕМУ ЭТО ВАЖНО</h2>
-            <p style="text-transform: none; letter-spacing: normal; color: var(--white);">Минималистичный дизайн позволяет сфокусироваться на тексте, не отвлекаясь на лишние элементы интерфейса.</p>
+        <article>
+            <h2 class="news-title">Аналитика и технологии</h2>
+            <p class="news-text">Минимализм в интерфейсах становится стандартом для современных медиа. Использование точечных разделителей и строгого черного фона подчеркивает серьезность и фокус на текстовой составляющей материалов.</p>
         </article>
 
-        <article style="padding: 20px 0;">
-            <h2 style="margin: 0; font-weight: 900;">ТЕХНОЛОГИИ И ДИЗАЙН</h2>
-            <p style="text-transform: none; letter-spacing: normal; color: var(--white);">Использование CSS-переменных позволяет менять тему сайта мгновенно, сохраняя единообразие стиля.</p>
+        <article>
+            <h2 class="news-title">Новый формат вещания</h2>
+            <p class="news-text">Вместо интерактивных кнопок теперь используется классическая структура лонгридов. Это позволяет пользователю потреблять информацию в привычном темпе, используя вертикальную прокрутку страницы.</p>
         </article>
 
-    </div>
-
-    <div class="controls" style="margin-top: 40px;">
-        <button onclick="location.reload()">ОБНОВИТЬ</button>
-        <button onclick="window.scrollTo(0,0)">НАВЕРХ</button>
-    </div>
-
-    <div class="settings">
-        ПОДПИСКА: <input type="email" id="emailInput" placeholder="EMAIL" style="width: 150px; text-transform: none;">
     </div>
 </main>
 
@@ -55,11 +109,24 @@
 </footer>
 
 <script>
-    // Скрипт таймера удален за ненадобностью. 
-    // Можно добавить простую логику для input, если нужно.
-    document.getElementById('emailInput')?.addEventListener('change', function() {
-        alert('Спасибо за подписку!');
-    });
+    async function updateDate() {
+        try {
+            const response = await fetch('https://tools.aimylogic.com/api/now?tz=Europe/Moscow');
+            const data = await response.json();
+            if (data && data.formatted) {
+                document.getElementById('timer').textContent = data.formatted;
+            }
+        } catch (error) {
+            console.error('Ошибка при получении даты:', error);
+            // Фолбэк на системное время, если API недоступно
+            const now = new Date();
+            document.getElementById('timer').textContent = now.toLocaleString('ru-RU');
+        }
+    }
+
+    updateDate();
+    // Обновляем дату раз в минуту
+    setInterval(updateDate, 60000);
 </script>
 
 </body>
