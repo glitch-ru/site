@@ -1,1 +1,152 @@
-1
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таймер Продуктивности</title>
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --bg: #f8f9fa;
+            --text: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        #timer {
+            font-size: 5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            transition: 0.3s;
+            margin: 5px;
+        }
+
+        #start { background: var(--primary); color: white; }
+        #start:hover { opacity: 0.8; }
+
+        #reset { background: #dfe6e9; color: var(--text); }
+        #reset:hover { background: #b2bec3; }
+
+        .settings {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        input {
+            width: 50px;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Фокус</h2>
+    <div id="timer">25:00</div>
+    
+    <div class="controls">
+        <button id="start">Старт</button>
+        <button id="reset">Сброс</button>
+    </div>
+
+    <div class="settings">
+        Установить время: 
+        <input type="number" id="minutesInput" value="25" min="1" max="60"> мин.
+    </div>
+</div>
+
+<script>
+    let timeLeft;
+    let timerId = null;
+    let isRunning = false;
+
+    const timerDisplay = document.getElementById('timer');
+    const startBtn = document.getElementById('start');
+    const resetBtn = document.getElementById('reset');
+    const minutesInput = document.getElementById('minutesInput');
+
+    // Инициализация из localStorage или по умолчанию
+    const savedTime = localStorage.getItem('pomodoroTime') || 25;
+    minutesInput.value = savedTime;
+    timeLeft = savedTime * 60;
+    updateDisplay();
+
+    function updateDisplay() {
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        const timeString = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        
+        timerDisplay.textContent = timeString;
+        document.title = isRunning ? `(${timeString}) Таймер` : 'Таймер Продуктивности';
+    }
+
+    function toggleTimer() {
+        if (isRunning) {
+            clearInterval(timerId);
+            startBtn.textContent = 'Продолжить';
+        } else {
+            startBtn.textContent = 'Пауза';
+            timerId = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerId);
+                    alert('Время вышло! Отдохните.');
+                    resetTimer();
+                }
+            }, 1000);
+        }
+        isRunning = !isRunning;
+    }
+
+    function resetTimer() {
+        clearInterval(timerId);
+        isRunning = false;
+        timeLeft = minutesInput.value * 60;
+        startBtn.textContent = 'Старт';
+        updateDisplay();
+    }
+
+    // Слушатели событий
+    startBtn.addEventListener('click', toggleTimer);
+    resetBtn.addEventListener('click', resetTimer);
+    
+    minutesInput.addEventListener('change', () => {
+        localStorage.setItem('pomodoroTime', minutesInput.value);
+        resetTimer();
+    });
+</script>
+
+</body>
+</html>
