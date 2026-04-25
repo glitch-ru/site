@@ -118,8 +118,8 @@ input {
 
 footer {
     padding: 20px;
-    font-size: 10px;
-    border-top: 1px solid var(--white);
+    font-size: 18px;
+    border-top: 4px solid var(--white);
     text-align: center;
     color: #var(--white);
 }
