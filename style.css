@@ -30,7 +30,7 @@ header {
 .logo-link {
     color: var(--white);
     text-decoration: none; /* Убираем подчеркивание */
-    font-size: 42px; /* Размер шрифта под высоту кнопки (шрифт 18px + отступы 16px + высота строки) */
+    font-size: 50px; /* Размер шрифта под высоту кнопки (шрифт 18px + отступы 16px + высота строки) */
     font-weight: 900;
     text-transform: none !important; /* Строго сохраняем регистр букв */
     line-height: 1;
