@@ -3,53 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>АДМИН</title>
+    <title>АДМИН | ZONE</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .admin-box { width: 90%; max-width: 800px; margin: 50px auto; }
-        input, textarea { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #000; font-family: inherit; box-sizing: border-box; }
-        button { background: #000; color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; font-weight: 900; }
+        .input-group { margin-bottom: 20px; }
+        label { font-weight: 900; display: block; margin-bottom: 5px; font-size: 0.8rem; color: #666; }
+        input, textarea { 
+            width: 100%; padding: 15px; border: 2px solid #000; 
+            font-family: inherit; box-sizing: border-box; font-size: 1.1rem;
+        }
+        input:focus, textarea:focus { border-color: #ff0000; outline: none; }
+        .slug-input { background: #f9f9f9; font-family: monospace; text-transform: lowercase; }
+        button { 
+            background: #000; color: #fff; border: none; padding: 20px; 
+            width: 100%; cursor: pointer; font-weight: 900; font-size: 1.2rem;
+            transition: background 0.2s;
+        }
+        button:hover { background: #ff0000; }
+        .hint { font-size: 0.7rem; text-transform: none; color: #888; margin-top: 5px; }
     </style>
 </head>
 <body>
     <header>
-        <a href="index.html" class="logo-link">Медиановости*</a>
+        <a href="index.html" class="logo-link">Новостное медиа</a>
         <a href="index.html" class="header-btn">НА САЙТ</a>
     </header>
 
     <main class="admin-box">
-        <h2 class="news-title">Добавить новость</h2>
-        <input type="text" id="title" placeholder="ЗАГОЛОВОК">
-        <input type="text" id="date" placeholder="ДАТА (Напр: 26.04.2026)">
-        <textarea id="short" placeholder="КРАТКОЕ ОПИСАНИЕ" rows="3"></textarea>
-        <textarea id="full" placeholder="ПОЛНЫЙ ТЕКСТ" rows="10"></textarea>
-        <button onclick="publish()">ОПУБЛИКОВАТЬ В СЕТЬ</button>
+        <h2 class="news-title">Создать публикацию</h2>
+        
+        <div class="input-group">
+            <label>ЗАГОЛОВОК</label>
+            <input type="text" id="title" placeholder="Введите название статьи">
+        </div>
+
+        <div class="input-group">
+            <label>URL-АДРЕС (SLUG)</label>
+            <input type="text" id="slug" class="slug-input" placeholder="example-news-id">
+            <div class="hint">Только латиница, цифры и дефис. Если пусто — создастся из заголовка.</div>
+        </div>
+
+        <div class="input-group">
+            <label>ДАТА</label>
+            <input type="text" id="date" placeholder="26.04.2026">
+        </div>
+
+        <div class="input-group">
+            <label>КРАТКОЕ ОПИСАНИЕ (ДЛЯ ЛЕНТЫ)</label>
+            <textarea id="short" rows="3" placeholder="Пара предложений для главной страницы"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>ПОЛНЫЙ ТЕКСТ</label>
+            <textarea id="full" rows="10" placeholder="Основное содержание статьи"></textarea>
+        </div>
+
+        <button onclick="publish()">ОПУБЛИКОВАТЬ</button>
     </main>
 
     <script>
-        const DB_URL = 'https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app/articles.json';
+        const DB_BASE = 'https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app/articles';
+
+        // Авто-генерация слага из заголовка (на случай если поле пустое)
+        function generateSlug(text) {
+            const rus = 'а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я'.split(' ');
+            const eng = 'a b v g d e e zh z i y k l m n o p r s t u f h ts ch sh shch y e yu ya'.split(' ');
+            return text.toLowerCase().split('').map(char => {
+                const index = rus.indexOf(char);
+                return index !== -1 ? eng[index] : char;
+            }).join('').replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        }
 
         async function publish() {
+            const titleEl = document.getElementById('title');
+            const slugEl = document.getElementById('slug');
+            
+            // Если слаг не введен вручную, генерируем его
+            let finalSlug = slugEl.value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
+            if (!finalSlug) {
+                finalSlug = generateSlug(titleEl.value);
+            }
+
+            if (!titleEl.value || !finalSlug) {
+                return alert("Нужен заголовок или корректный SLUG");
+            }
+
             const article = {
-                title: document.getElementById('title').value,
+                title: titleEl.value,
                 date: document.getElementById('date').value,
                 shortDesc: document.getElementById('short').value,
                 fullText: document.getElementById('full').value
             };
 
-            if (!article.title) return alert("Введите заголовок!");
-
             try {
-                const response = await fetch(DB_URL, {
-                    method: 'POST',
+                // Используем PUT по адресу конкретного слага
+                const response = await fetch(`${DB_BASE}/${finalSlug}.json`, {
+                    method: 'PUT',
                     body: JSON.stringify(article)
                 });
+
                 if (response.ok) {
-                    alert("Опубликовано для всех пользователей!");
+                    alert(`Готово! Ссылка: ?id=${finalSlug}`);
                     window.location.href = 'index.html';
+                } else {
+                    alert("Ошибка при сохранении");
                 }
             } catch (e) {
-                alert("Ошибка публикации.");
+                console.error(e);
+                alert("Нет связи с базой данных");
             }
         }
     </script>
