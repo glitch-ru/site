@@ -157,3 +157,63 @@ footer {
     color: var(--muted-color);
     text-transform: none;
 }
+
+/* --- МОБИЛЬНАЯ АДАПТАЦИЯ --- */
+
+@media (max-width: 768px) {
+    header {
+        padding: 15px;
+        flex-direction: column; /* Элементы в шапке встают друг под друга */
+        gap: 15px;
+        text-align: center;
+    }
+
+    .logo-link {
+        font-size: 28px; /* Уменьшаем логотип */
+    }
+
+    .header-btn {
+        width: 100%; /* Кнопка «ПОДДЕРЖАТЬ» на всю ширину */
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .news-title {
+        font-size: 2rem; /* Уменьшаем заголовки новостей */
+        width: 92%;
+    }
+
+    /* Для открытой статьи делаем заголовок чуть крупнее, чем в ленте, но меньше десктопного */
+    #news-feed article h1.news-title {
+        font-size: 2.5rem !important;
+    }
+
+    .news-text {
+        font-size: 1.1rem;
+        width: 92%;
+    }
+
+    .full-text {
+        font-size: 1.2rem; /* Текст статьи чуть меньше на мобильных */
+    }
+
+    article {
+        padding: 30px 0; /* Уменьшаем вертикальные отступы между новостями */
+    }
+
+    footer {
+        font-size: 12px;
+        padding: 20px 15px;
+    }
+}
+
+/* Совсем маленькие экраны (телефоны в портретном режиме) */
+@media (max-width: 480px) {
+    .news-title {
+        font-size: 1.6rem;
+    }
+
+    .logo-link {
+        font-size: 24px;
+    }
+}
