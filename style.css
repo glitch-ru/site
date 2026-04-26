@@ -1,37 +1,37 @@
 :root {
     --accent: #ff0000;
-    --black: #000000;
-    --white: #ffffff;
-    --dark-bg: #000000;
+    --bg-color: #ffffff; /* Белый фон */
+    --text-color: #000000; /* Черный текст */
+    --muted-color: #666666; /* Серый текст для дат */
 }
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: var(--dark-bg);
-    color: var(--white);
+    background-color: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     text-transform: uppercase;
     letter-spacing: -0.02em;
-    overflow-y: auto; /* Включаем прокрутку */
+    overflow-y: auto;
 }
 
 header {
-    border-bottom: 1px solid var(--white);
+    border-bottom: 1px solid var(--text-color);
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
-    background: var(--dark-bg);
+    background: var(--bg-color);
     z-index: 10;
 }
 
 .logo-link {
-    color: var(--white);
+    color: var(--text-color);
     text-decoration: none;
     font-size: 35px;
     font-weight: 900;
@@ -54,7 +54,7 @@ header {
 
 .donate-btn {
     background: var(--accent);
-    color: var(--white);
+    color: #ffffff; /* Текст на кнопке поддержки всегда белый */
 }
 
 main {
@@ -62,17 +62,6 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%; /* Занимает всю ширину */
-}
-
-/* Настройка даты по центру */
-#timer {
-    font-size: 5vw; /* Крупная дата */
-    font-weight: 900;
-    line-height: 1;
-    margin: 40px 0;
-    text-align: center;
-    font-variant-numeric: tabular-nums;
     width: 100%;
 }
 
@@ -82,7 +71,7 @@ main {
 
 article {
     width: 100%;
-    border-bottom: 2px dotted var(--white); /* Точечная линия */
+    border-bottom: 2px dotted var(--text-color); /* Точечная линия на всю ширину */
     padding: 40px 0;
     display: flex;
     flex-direction: column;
@@ -93,30 +82,69 @@ article:last-child {
     border-bottom: none;
 }
 
-.news-title {
+.article-link {
     width: 90%;
     max-width: 1000px;
+    text-decoration: none;
+    color: var(--text-color);
+    display: block;
+}
+
+.article-link:hover .news-title {
+    color: var(--accent); /* При наведении заголовок становится красным */
+}
+
+.article-date {
+    width: 90%;
+    max-width: 1000px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--muted-color);
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.news-title {
     font-size: 3rem;
     font-weight: 900;
     margin: 0 0 20px 0;
     text-align: left;
+    transition: color 0.2s;
 }
 
 .news-text {
     width: 90%;
     max-width: 1000px;
-    font-weight: 400; /* Обычный шрифт */
+    font-weight: 400;
     font-size: 1.2rem;
     line-height: 1.5;
-    text-transform: none; /* Читаемый регистр */
+    text-transform: none;
     letter-spacing: normal;
-    color: #cccccc;
+    color: var(--text-color);
     margin: 0;
 }
 
-/* Скрываем элементы старого интерфейса */
-.controls, .settings {
-    display: none;
+/* Специфичные стили для полного текста открытой статьи */
+.full-text {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    white-space: pre-wrap; /* Сохраняет абзацы и переносы строк (\n) из JSON */
+    margin-bottom: 40px;
+}
+
+.back-link {
+    width: 90%;
+    max-width: 1000px;
+    text-decoration: none;
+    color: var(--accent);
+    font-weight: 900;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.back-link:hover {
+    text-decoration: underline;
 }
 
 footer {
@@ -124,8 +152,8 @@ footer {
     font-size: 14px; 
     line-height: 1.6;
     letter-spacing: 0.05em;
-    border-top: 1px solid var(--white);
+    border-top: 1px solid var(--text-color);
     text-align: center;
-    color: #cccccc;
+    color: var(--muted-color);
     text-transform: none;
 }
