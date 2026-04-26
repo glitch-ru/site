@@ -48,13 +48,18 @@ header {
     border: none;
 }
 
+/* Стилизация статей в ленте */
 article {
     width: 100%;
-    border-bottom: 2px dotted var(--text);
-    padding: 50px 0;
+    padding: 30px 0; /* Уменьшенный отступ */
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* Точечная линия ТОЛЬКО МЕЖДУ статьями (сверху каждой, кроме первой) */
+.feed-item + .feed-item {
+    border-top: 2px dotted var(--text);
 }
 
 .article-link {
@@ -64,18 +69,29 @@ article {
     max-width: 1000px;
 }
 
+/* Подсветка красным при наведении */
+.article-link:hover .news-title {
+    color: var(--accent);
+}
+
 .article-date {
     width: 90%;
     max-width: 1000px;
     font-size: 0.9rem;
     color: #666;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .news-title {
-    font-size: 3rem;
+    font-size: 2.2rem; /* Уменьшенный шрифт для главной */
     font-weight: 900;
-    margin: 0 0 20px 0;
+    margin: 0 0 15px 0;
+    transition: color 0.2s ease;
+}
+
+/* Заголовок на странице самой статьи оставляем крупным */
+.article-page-title {
+    font-size: 3.5rem;
 }
 
 .news-text {
@@ -83,16 +99,20 @@ article {
     max-width: 1000px;
     text-transform: none;
     font-weight: 400;
-    line-height: 1.5;
-    font-size: 1.2rem;
+    line-height: 1.4;
+    font-size: 1.1rem;
+    color: var(--text);
 }
 
 .full-text {
     white-space: pre-wrap;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    line-height: 1.6;
 }
 
 .back-link {
+    width: 90%;
+    max-width: 1000px;
     margin-top: 30px;
     color: var(--accent);
     text-decoration: none;
@@ -102,13 +122,13 @@ article {
 footer {
     padding: 40px;
     text-align: center;
-    border-top: 1px solid #000;
+    border-top: 1px solid var(--text); /* Сплошная линия футера */
     font-size: 12px;
 }
 
-/* Мобилки */
+/* Адаптивность */
 @media (max-width: 768px) {
     header { flex-direction: column; gap: 15px; }
-    .news-title { font-size: 1.8rem; }
-    .news-text { font-size: 1rem; }
+    .news-title { font-size: 1.6rem; }
+    .article-page-title { font-size: 2.2rem; }
 }
