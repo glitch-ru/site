@@ -3,144 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>АДМИН | ZONE</title>
+    <title>ВХОД | ZONE ADMIN</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .admin-box { width: 90%; max-width: 800px; margin: 50px auto; }
-        .input-group { margin-bottom: 20px; }
-        label { font-weight: 900; display: block; margin-bottom: 5px; font-size: 0.8rem; color: #666; }
-        input, textarea { 
-            width: 100%; padding: 15px; border: 2px solid #000; 
-            font-family: inherit; box-sizing: border-box; font-size: 1.1rem;
-        }
-        input:focus, textarea:focus { border-color: #ff0000; outline: none; }
-        .slug-input { background: #f9f9f9; font-family: monospace; text-transform: lowercase; }
-        button { 
-            background: #000; color: #fff; border: none; padding: 20px; 
-            width: 100%; cursor: pointer; font-weight: 900; font-size: 1.2rem;
-            transition: background 0.2s;
-        }
-        button:hover { background: #ff0000; }
-        .hint { font-size: 0.7rem; text-transform: none; color: #888; margin-top: 5px; }
-    </style>
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <style>
+        .admin-box { width: 90%; max-width: 600px; margin: 50px auto; display: none; } /* Скрыта до входа */
+        .login-box { width: 90%; max-width: 400px; margin: 100px auto; text-align: center; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        input, textarea { width: 100%; padding: 15px; border: 2px solid #000; font-family: inherit; box-sizing: border-box; }
+        button { background: #000; color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; font-weight: 900; text-transform: uppercase; }
+        button:hover { background: #ff0000; }
+        #logoutBtn { background: none; color: #000; border: 1px solid #000; padding: 5px 10px; width: auto; font-size: 12px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo-link">ZONE ADMIN</a>
+    <button id="logoutBtn" style="display:none" onclick="logout()">ВЫЙТИ</button>
+</header>
+
+<div id="loginSection" class="login-box">
+    <h2 class="news-title" style="font-size: 1.5rem;">АВТОРИЗАЦИЯ</h2>
+    <div class="input-group">
+        <input type="email" id="loginEmail" placeholder="EMAIL">
+    </div>
+    <div class="input-group">
+        <input type="password" id="loginPass" placeholder="ПАРОЛЬ">
+    </div>
+    <button onclick="login()">ВОЙТИ</button>
+</div>
+
+<main id="adminSection" class="admin-box">
+    <h2 class="news-title">НОВАЯ ПУБЛИКАЦИЯ</h2>
+    <div class="input-group">
+        <input type="text" id="title" placeholder="ЗАГОЛОВОК">
+    </div>
+    <div class="input-group">
+        <input type="text" id="slug" placeholder="URL-АДРЕС (SLUG)">
+    </div>
+    <div class="input-group">
+        <input type="text" id="date" placeholder="ДАТА (26.04.2026)">
+    </div>
+    <div class="input-group">
+        <textarea id="short" rows="3" placeholder="КРАТКОЕ ОПИСАНИЕ"></textarea>
+    </div>
+    <div class="input-group">
+        <textarea id="full" rows="10" placeholder="ПОЛНЫЙ ТЕКСТ"></textarea>
+    </div>
+    <button onclick="publish()">ОПУБЛИКОВАТЬ</button>
+</main>
 
 <script>
-  // Конфигурация вашего проекта (возьмите в настройках проекта Firebase)
-  const firebaseConfig = {
-    apiKey: "1:631352355174:web:ce243f50a305dc62f000a7",
+    // 1. ТВОИ НАСТРОЙКИ FIREBASE (возьми в консоли: Project Settings -> General -> Your Apps)
+    const firebaseConfig = {
+    apiKey: "AIzaSyB8TvF2sMd-G4CCjkehVDq4tx1qRhhF1P4",
     authDomain: "shortener-b6223.firebaseapp.com",
     databaseURL: "https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "shortener-b6223",
-    storageBucket: "shortener-b6223.appspot.com",
-    messagingSenderId: "...",
-    appId: "..."
+    storageBucket: "shortener-b6223.firebasestorage.app",
+    messagingSenderId: "631352355174",
+    appId: "1:631352355174:web:a219a296baace3b1f000a7"
   };
-  
-  firebase.initializeApp(firebaseConfig);
+    
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-  // Функция входа (вызовите её один раз или добавьте форму)
-  function login() {
-    const email = prompt("Email:");
-    const password = prompt("Password:");
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(() => alert("Вы вошли! Теперь можно публиковать."))
-      .catch(err => alert("Ошибка: " + err.message));
-  }
-</script>
-</head>
-<body>
-    <header>
-        <a href="index.html" class="logo-link">Новостное медиа</a>
-        <button onclick="login()">ВОЙТИ</button>
-        <a href="index.html" class="header-btn">НА САЙТ</a>
-    </header>
+    // СЛУШАТЕЛЬ СОСТОЯНИЯ: вошел пользователь или нет
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminSection').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'block';
+        } else {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('adminSection').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'none';
+        }
+    });
 
-    <main class="admin-box">
-        <h2 class="news-title">Создать публикацию</h2>
+    // ФУНКЦИЯ ВХОДА
+    async function login() {
+        const email = document.getElementById('loginEmail').value;
+        const pass = document.getElementById('loginPass').value;
+        try {
+            await auth.signInWithEmailAndPassword(email, pass);
+        } catch (e) {
+            alert("Ошибка входа: " + e.message);
+        }
+    }
+
+    // ФУНКЦИЯ ВЫХОДА
+    function logout() {
+        auth.signOut();
+    }
+
+    // ФУНКЦИЯ ПУБЛИКАЦИИ
+    async function publish() {
+        const title = document.getElementById('title').value;
+        let slug = document.getElementById('slug').value.trim().toLowerCase();
         
-        <div class="input-group">
-            <label>ЗАГОЛОВОК</label>
-            <input type="text" id="title" placeholder="Введите название статьи">
-        </div>
+        if (!slug) slug = title.replace(/\s+/g, '-').toLowerCase(); // простая замена пробелов для примера
 
-        <div class="input-group">
-            <label>URL-АДРЕС (SLUG)</label>
-            <input type="text" id="slug" class="slug-input" placeholder="example-news-id">
-            <div class="hint">Только латиница, цифры и дефис. Если пусто — создастся из заголовка.</div>
-        </div>
+        const article = {
+            title: title,
+            date: document.getElementById('date').value,
+            shortDesc: document.getElementById('short').value,
+            fullText: document.getElementById('full').value
+        };
 
-        <div class="input-group">
-            <label>ДАТА</label>
-            <input type="text" id="date" placeholder="26.04.2026">
-        </div>
-
-        <div class="input-group">
-            <label>КРАТКОЕ ОПИСАНИЕ (ДЛЯ ЛЕНТЫ)</label>
-            <textarea id="short" rows="3" placeholder="Пара предложений для главной страницы"></textarea>
-        </div>
-
-        <div class="input-group">
-            <label>ПОЛНЫЙ ТЕКСТ</label>
-            <textarea id="full" rows="10" placeholder="Основное содержание статьи"></textarea>
-        </div>
-
-        <button onclick="publish()">ОПУБЛИКОВАТЬ</button>
-    </main>
-
-    <script>
-        const DB_BASE = 'https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app/articles';
-
-        // Авто-генерация слага из заголовка (на случай если поле пустое)
-        function generateSlug(text) {
-            const rus = 'а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я'.split(' ');
-            const eng = 'a b v g d e e zh z i y k l m n o p r s t u f h ts ch sh shch y e yu ya'.split(' ');
-            return text.toLowerCase().split('').map(char => {
-                const index = rus.indexOf(char);
-                return index !== -1 ? eng[index] : char;
-            }).join('').replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        // Теперь мы используем SDK вместо обычного fetch, чтобы передать токен авторизации автоматически
+        try {
+            await firebase.database().ref('articles/' + slug).set(article);
+            alert("Статья опубликована!");
+            window.location.href = 'index.html';
+        } catch (e) {
+            alert("Ошибка доступа: Скорее всего, вы не авторизованы как админ.");
         }
+    }
+</script>
 
-        async function publish() {
-            const titleEl = document.getElementById('title');
-            const slugEl = document.getElementById('slug');
-            
-            // Если слаг не введен вручную, генерируем его
-            let finalSlug = slugEl.value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
-            if (!finalSlug) {
-                finalSlug = generateSlug(titleEl.value);
-            }
-
-            if (!titleEl.value || !finalSlug) {
-                return alert("Нужен заголовок или корректный SLUG");
-            }
-
-            const article = {
-                title: titleEl.value,
-                date: document.getElementById('date').value,
-                shortDesc: document.getElementById('short').value,
-                fullText: document.getElementById('full').value
-            };
-
-            try {
-                // Используем PUT по адресу конкретного слага
-                const response = await fetch(`${DB_BASE}/${finalSlug}.json`, {
-                    method: 'PUT',
-                    body: JSON.stringify(article)
-                });
-
-                if (response.ok) {
-                    alert(`Готово! Ссылка: ?id=${finalSlug}`);
-                    window.location.href = 'index.html';
-                } else {
-                    alert("Ошибка при сохранении");
-                }
-            } catch (e) {
-                console.error(e);
-                alert("Нет связи с базой данных");
-            }
-        }
-    </script>
 </body>
 </html>
