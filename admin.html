@@ -23,6 +23,32 @@
         button:hover { background: #ff0000; }
         .hint { font-size: 0.7rem; text-transform: none; color: #888; margin-top: 5px; }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<script>
+  // Конфигурация вашего проекта (возьмите в настройках проекта Firebase)
+  const firebaseConfig = {
+    apiKey: "ВАШ_API_KEY",
+    authDomain: "shortener-b6223.firebaseapp.com",
+    databaseURL: "https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "shortener-b6223",
+    storageBucket: "shortener-b6223.appspot.com",
+    messagingSenderId: "...",
+    appId: "..."
+  };
+  
+  firebase.initializeApp(firebaseConfig);
+
+  // Функция входа (вызовите её один раз или добавьте форму)
+  function login() {
+    const email = prompt("Email:");
+    const password = prompt("Password:");
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(() => alert("Вы вошли! Теперь можно публиковать."))
+      .catch(err => alert("Ошибка: " + err.message));
+  }
+</script>
 </head>
 <body>
     <header>
