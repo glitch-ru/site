@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АДМИН ПАНЕЛЬ</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container { width: 90%; max-width: 800px; margin: 40px auto; }
+        input, textarea { 
+            width: 100%; padding: 15px; margin: 10px 0; 
+            border: 2px solid #000; font-family: inherit; font-size: 1.1rem;
+        }
+        button { 
+            background: #000; color: #fff; border: none; padding: 20px; 
+            font-weight: 900; cursor: pointer; width: 100%; margin-top: 10px;
+        }
+        #output { 
+            background: #f0f0f0; padding: 20px; border: 1px dashed #000; 
+            margin-top: 30px; white-space: pre-wrap; font-family: monospace; text-transform: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo-link">Новостное медиа</a>
+        <span class="header-btn" style="background: #eee;">АДМИН</span>
+    </header>
+
+    <main class="admin-container">
+        <h2 class="news-title">Добавить новость</h2>
+        <p style="text-transform: none;">Заполните поля, чтобы получить обновленный код для articles.json</p>
+        
+        <input type="text" id="title" placeholder="ЗАГОЛОВОК">
+        <input type="text" id="date" placeholder="ДАТА (например, 26.04.2026)">
+        <textarea id="shortDesc" placeholder="КРАТКОЕ ОПИСАНИЕ (для главной)" rows="3"></textarea>
+        <textarea id="fullText" placeholder="ПОЛНЫЙ ТЕКСТ СТАТЬИ" rows="8"></textarea>
+        
+        <button onclick="generateJSON()">СФОРМИРОВАТЬ JSON</button>
+
+        <div id="output-section" style="display:none;">
+            <h3 style="margin-top:40px;">СКОПИРУЙТЕ ЭТО В ARTICLES.JSON:</h3>
+            <div id="output"></div>
+        </div>
+    </main>
+
+    <script>
+        async function generateJSON() {
+            try {
+                // Пытаемся загрузить текущий файл
+                const response = await fetch('articles.json');
+                let currentArticles = [];
+                if (response.ok) currentArticles = await response.json();
+
+                const newArticle = {
+                    id: Date.now().toString(),
+                    title: document.getElementById('title').value,
+                    shortDesc: document.getElementById('shortDesc').value,
+                    fullText: document.getElementById('fullText').value,
+                    date: document.getElementById('date').value
+                };
+
+                // Добавляем в массив
+                currentArticles.push(newArticle);
+
+                // Выводим результат
+                document.getElementById('output-section').style.display = 'block';
+                document.getElementById('output').textContent = JSON.stringify(currentArticles, null, 2);
+                
+                alert("Готово! Скопируйте текст снизу в ваш файл articles.json");
+            } catch (e) {
+                alert("Ошибка: Убедитесь, что сайт запущен через сервер (Live Server), чтобы админка могла прочитать текущий JSON.");
+            }
+        }
+    </script>
+</body>
+</html>
