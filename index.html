@@ -20,7 +20,7 @@
 <footer>18+. МАТЕРИАЛ СОЗДАН ДЛЯ ПУБЛИЧНОГО ИСПОЛЬЗОВАНИЯ</footer>
 
 <script>
-    const DB_URL = 'https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app/articles.json';
+    const DB_URL = 'ВАША_ССЫЛКА_ИЗ_FIREBASE/articles.json';
 
     async function loadNews() {
         const newsFeed = document.getElementById('news-feed');
@@ -28,7 +28,6 @@
             const response = await fetch(DB_URL);
             const data = await response.json();
             
-            // Превращаем объект из Firebase в массив
             let articles = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -37,32 +36,33 @@
             if (articleId && data[articleId]) {
                 const a = data[articleId];
                 newsFeed.innerHTML = `
-                    <article style="border-bottom:none">
+                    <article class="single-article">
                         <div class="article-date">${a.date}</div>
-                        <h1 class="news-title" style="font-size:3.5rem">${a.title}</h1>
+                        <h1 class="news-title article-page-title">${a.title}</h1>
                         <p class="news-text full-text">${a.fullText}</p>
-                        <a href="index.html" class="back-link">← НАЗАД</a>
+                        <a href="index.html" class="back-link">← НАЗАД К НОВОСТЯМ</a>
                     </article>`;
                 return;
             }
 
-            // Новые сверху, лимит 5
             articles.reverse();
             const latest = articles.slice(0, 5);
 
             if (latest.length === 0) {
-                newsFeed.innerHTML = '<p style="text-align:center">Новостей нет.</p>';
+                newsFeed.innerHTML = '<p style="text-align:center; padding: 50px;">Новостей нет.</p>';
             } else {
                 newsFeed.innerHTML = latest.map(a => `
-                    <article>
+                    <article class="feed-item">
                         <div class="article-date">${a.date}</div>
-                        <a href="?id=${a.id}" class="article-link"><h2 class="news-title">${a.title}</h2></a>
+                        <a href="?id=${a.id}" class="article-link">
+                            <h2 class="news-title">${a.title}</h2>
+                        </a>
                         <p class="news-text">${a.shortDesc}</p>
                     </article>
                 `).join('');
             }
         } catch (e) {
-            newsFeed.innerHTML = 'Ошибка подключения к базе данных.';
+            newsFeed.innerHTML = '<p style="text-align:center; padding: 50px;">Ошибка подключения к базе данных.</p>';
         }
     }
     loadNews();
