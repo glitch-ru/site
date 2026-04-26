@@ -14,13 +14,13 @@
 </header>
 
 <main id="main-container">
-    <div class="news-feed" id="news-feed">Загрузка свежих новостей...</div>
+    <div class="news-feed" id="news-feed"></div>
 </main>
 
 <footer>18+. МАТЕРИАЛ СОЗДАН ДЛЯ ПУБЛИЧНОГО ИСПОЛЬЗОВАНИЯ</footer>
 
 <script>
-    const DB_URL = 'ВАША_ССЫЛКА_ИЗ_FIREBASE/articles.json';
+    const DB_URL = 'https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app/articles.json';
 
     async function loadNews() {
         const newsFeed = document.getElementById('news-feed');
