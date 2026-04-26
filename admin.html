@@ -7,15 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .admin-box { width: 90%; max-width: 800px; margin: 50px auto; }
-        input, textarea { 
-            width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #000;
-            font-family: inherit; box-sizing: border-box; font-size: 1.1rem;
-        }
-        button { 
-            background: #000; color: #fff; border: none; padding: 20px; 
-            width: 100%; cursor: pointer; font-weight: 900; margin-top: 10px;
-        }
-        button:hover { background: #ff0000; }
+        input, textarea { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #000; font-family: inherit; box-sizing: border-box; }
+        button { background: #000; color: #fff; border: none; padding: 20px; width: 100%; cursor: pointer; font-weight: 900; }
     </style>
 </head>
 <body>
@@ -25,33 +18,40 @@
     </header>
 
     <main class="admin-box">
-        <h2 class="news-title">Новая публикация</h2>
+        <h2 class="news-title">Добавить новость</h2>
         <input type="text" id="title" placeholder="ЗАГОЛОВОК">
         <input type="text" id="date" placeholder="ДАТА (Напр: 26.04.2026)">
         <textarea id="short" placeholder="КРАТКОЕ ОПИСАНИЕ" rows="3"></textarea>
         <textarea id="full" placeholder="ПОЛНЫЙ ТЕКСТ" rows="10"></textarea>
-        <button id="saveBtn">ОПУБЛИКОВАТЬ</button>
+        <button onclick="publish()">ОПУБЛИКОВАТЬ В СЕТЬ</button>
     </main>
 
     <script>
-        document.getElementById('saveBtn').onclick = function() {
+        const DB_URL = 'https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app/articles.json';
+
+        async function publish() {
             const article = {
-                id: Date.now().toString(),
                 title: document.getElementById('title').value,
                 date: document.getElementById('date').value,
                 shortDesc: document.getElementById('short').value,
                 fullText: document.getElementById('full').value
             };
 
-            if (!article.title || !article.fullText) return alert("Заполни поля!");
+            if (!article.title) return alert("Введите заголовок!");
 
-            const data = JSON.parse(localStorage.getItem('news_data')) || [];
-            data.push(article);
-            localStorage.setItem('news_data', JSON.stringify(data));
-
-            alert("Опубликовано!");
-            window.location.href = 'index.html';
-        };
+            try {
+                const response = await fetch(DB_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(article)
+                });
+                if (response.ok) {
+                    alert("Опубликовано для всех пользователей!");
+                    window.location.href = 'index.html';
+                }
+            } catch (e) {
+                alert("Ошибка публикации.");
+            }
+        }
     </script>
 </body>
 </html>
