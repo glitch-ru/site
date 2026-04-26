@@ -1,219 +1,114 @@
 :root {
     --accent: #ff0000;
-    --bg-color: #ffffff; /* Белый фон */
-    --text-color: #000000; /* Черный текст */
-    --muted-color: #666666; /* Серый текст для дат */
+    --bg: #ffffff;
+    --text: #000000;
 }
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background: var(--bg);
+    color: var(--text);
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
     overflow-y: auto;
 }
 
 header {
-    border-bottom: 1px solid var(--text-color);
+    border-bottom: 1px solid var(--text);
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
-    background: var(--bg-color);
-    z-index: 10;
+    background: var(--bg);
+    z-index: 100;
 }
 
 .logo-link {
-    color: var(--text-color);
+    color: var(--text);
     text-decoration: none;
-    font-size: 35px;
+    font-size: 30px;
     font-weight: 900;
     text-transform: none !important;
-    line-height: 1;
 }
 
 .header-btn {
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 900;
-    padding: 8px 16px;
-    display: inline-block;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    min-width: 140px;
-    box-sizing: border-box;
+    padding: 10px 20px;
+    border: 1px solid var(--text);
+    color: var(--text);
 }
 
 .donate-btn {
     background: var(--accent);
-    color: #ffffff; /* Текст на кнопке поддержки всегда белый */
-}
-
-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.news-feed {
-    width: 100%;
+    color: #fff;
+    border: none;
 }
 
 article {
     width: 100%;
-    border-bottom: 2px dotted var(--text-color); /* Точечная линия на всю ширину */
-    padding: 40px 0;
+    border-bottom: 2px dotted var(--text);
+    padding: 50px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-article:last-child {
-    border-bottom: none;
-}
-
 .article-link {
+    text-decoration: none;
+    color: inherit;
     width: 90%;
     max-width: 1000px;
-    text-decoration: none;
-    color: var(--text-color);
-    display: block;
-}
-
-.article-link:hover .news-title {
-    color: var(--accent); /* При наведении заголовок становится красным */
 }
 
 .article-date {
     width: 90%;
     max-width: 1000px;
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--muted-color);
+    font-size: 0.9rem;
+    color: #666;
     margin-bottom: 10px;
-    text-align: left;
 }
 
 .news-title {
     font-size: 3rem;
     font-weight: 900;
     margin: 0 0 20px 0;
-    text-align: left;
-    transition: color 0.2s;
 }
 
 .news-text {
     width: 90%;
     max-width: 1000px;
-    font-weight: 400;
-    font-size: 1.2rem;
-    line-height: 1.5;
     text-transform: none;
-    letter-spacing: normal;
-    color: var(--text-color);
-    margin: 0;
+    font-weight: 400;
+    line-height: 1.5;
+    font-size: 1.2rem;
 }
 
-/* Специфичные стили для полного текста открытой статьи */
 .full-text {
+    white-space: pre-wrap;
     font-size: 1.4rem;
-    line-height: 1.8;
-    white-space: pre-wrap; /* Сохраняет абзацы и переносы строк (\n) из JSON */
-    margin-bottom: 40px;
 }
 
 .back-link {
-    width: 90%;
-    max-width: 1000px;
-    text-decoration: none;
+    margin-top: 30px;
     color: var(--accent);
+    text-decoration: none;
     font-weight: 900;
-    font-size: 1.2rem;
-    margin-top: 20px;
-    text-align: left;
-}
-
-.back-link:hover {
-    text-decoration: underline;
 }
 
 footer {
-    padding: 24px;
-    font-size: 14px; 
-    line-height: 1.6;
-    letter-spacing: 0.05em;
-    border-top: 1px solid var(--text-color);
+    padding: 40px;
     text-align: center;
-    color: var(--muted-color);
-    text-transform: none;
+    border-top: 1px solid #000;
+    font-size: 12px;
 }
 
-/* --- МОБИЛЬНАЯ АДАПТАЦИЯ --- */
-
+/* Мобилки */
 @media (max-width: 768px) {
-    header {
-        padding: 15px;
-        flex-direction: column; /* Элементы в шапке встают друг под друга */
-        gap: 15px;
-        text-align: center;
-    }
-
-    .logo-link {
-        font-size: 28px; /* Уменьшаем логотип */
-    }
-
-    .header-btn {
-        width: 100%; /* Кнопка «ПОДДЕРЖАТЬ» на всю ширину */
-        font-size: 16px;
-        padding: 12px;
-    }
-
-    .news-title {
-        font-size: 2rem; /* Уменьшаем заголовки новостей */
-        width: 92%;
-    }
-
-    /* Для открытой статьи делаем заголовок чуть крупнее, чем в ленте, но меньше десктопного */
-    #news-feed article h1.news-title {
-        font-size: 2.5rem !important;
-    }
-
-    .news-text {
-        font-size: 1.1rem;
-        width: 92%;
-    }
-
-    .full-text {
-        font-size: 1.2rem; /* Текст статьи чуть меньше на мобильных */
-    }
-
-    article {
-        padding: 30px 0; /* Уменьшаем вертикальные отступы между новостями */
-    }
-
-    footer {
-        font-size: 12px;
-        padding: 20px 15px;
-    }
-}
-
-/* Совсем маленькие экраны (телефоны в портретном режиме) */
-@media (max-width: 480px) {
-    .news-title {
-        font-size: 1.6rem;
-    }
-
-    .logo-link {
-        font-size: 24px;
-    }
+    header { flex-direction: column; gap: 15px; }
+    .news-title { font-size: 1.8rem; }
+    .news-text { font-size: 1rem; }
 }
