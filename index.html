@@ -29,63 +29,58 @@
 </footer>
 
 <script>
-    async function loadArticles() {
-        const newsFeed = document.getElementById('news-feed');
+async function loadArticles() {
+    const newsFeed = document.getElementById('news-feed');
+    
+    try {
+        const response = await fetch('articles.json');
+        if (!response.ok) throw new Error('Файл articles.json не найден');
         
-        try {
-            // Загружаем данные из JSON файла
-            const response = await fetch('articles.json');
-            
-            if (!response.ok) {
-                throw new Error('Файл articles.json не найден');
-            }
-            
-            const articles = await response.json();
-            
-            // Получаем ID статьи из URL, если мы перешли по ссылке
-            const urlParams = new URLSearchParams(window.location.search);
-            const articleId = urlParams.get('id');
+        let articles = await response.json();
+        
+        // 1. Сортируем: новые ID (или даты) вверху. 
+        // Если ID — это таймстамп или просто порядковый номер, инвертируем массив:
+        articles.reverse();
 
-            if (articleId) {
-                // РЕЖИМ ПРОСМОТРА ОДНОЙ СТАТЬИ
-                const article = articles.find(a => a.id === articleId);
-                
-                if (article) {
-                    newsFeed.innerHTML = `
-                        <article style="border-bottom: none;">
-                            <div class="article-date">${article.date}</div>
-                            <h1 class="news-title" style="font-size: 4rem;">${article.title}</h1>
-                            <p class="news-text full-text">${article.fullText}</p>
-                            <a href="index.html" class="back-link">← НАЗАД К НОВОСТЯМ</a>
-                        </article>
-                    `;
-                } else {
-                    newsFeed.innerHTML = '<p style="text-align: center; margin-top: 50px;">Статья не найдена.</p><a href="index.html" class="back-link" style="text-align: center; display: block;">← НАЗАД</a>';
-                }
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleId = urlParams.get('id');
+
+        if (articleId) {
+            // Просмотр полной статьи (без лимита)
+            const article = articles.find(a => a.id === articleId);
+            if (article) {
+                newsFeed.innerHTML = `
+                    <article style="border-bottom: none;">
+                        <div class="article-date">${article.date}</div>
+                        <h1 class="news-title" style="font-size: 4rem;">${article.title}</h1>
+                        <p class="news-text full-text">${article.fullText}</p>
+                        <a href="index.html" class="back-link">← НАЗАД К НОВОСТЯМ</a>
+                    </article>
+                `;
+            }
+        } else {
+            // 2. Лимит: только 5 последних новостей
+            const latestArticles = articles.slice(0, 5);
+
+            if (latestArticles.length === 0) {
+                newsFeed.innerHTML = '<p style="text-align: center; margin-top: 50px;">Нет новостей.</p>';
             } else {
-                // РЕЖИМ ЛЕНТЫ НОВОСТЕЙ
-                if (articles.length === 0) {
-                    newsFeed.innerHTML = '<p style="text-align: center; margin-top: 50px; font-size: 1.2rem;">Нет добавленных новостей.</p>';
-                } else {
-                    newsFeed.innerHTML = articles.map(article => `
-                        <article>
-                            <div class="article-date">${article.date}</div>
-                            <a href="?id=${article.id}" class="article-link">
-                                <h2 class="news-title">${article.title}</h2>
-                            </a>
-                            <p class="news-text">${article.shortDesc}</p>
-                        </article>
-                    `).join('');
-                }
+                newsFeed.innerHTML = latestArticles.map(article => `
+                    <article>
+                        <div class="article-date">${article.date}</div>
+                        <a href="?id=${article.id}" class="article-link">
+                            <h2 class="news-title">${article.title}</h2>
+                        </a>
+                        <p class="news-text">${article.shortDesc}</p>
+                    </article>
+                `).join('');
             }
-        } catch (error) {
-            console.error('Ошибка загрузки:', error);
-            newsFeed.innerHTML = '<p style="text-align: center; margin-top: 50px;">Ошибка загрузки статей. Убедитесь, что вы используете локальный сервер (например, Live Server), а файл articles.json существует.</p>';
         }
+    } catch (error) {
+        newsFeed.innerHTML = '<p style="text-align: center; margin-top: 50px;">Ошибка загрузки JSON.</p>';
     }
-
-    // Запускаем функцию при загрузке страницы
-    loadArticles();
+}
+loadArticles();
 </script>
 
 </body>
