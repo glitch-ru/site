@@ -3,64 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>АДМИН ПАНЕЛЬ</title>
+    <title>АДМИН</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .admin-container { width: 90%; max-width: 800px; margin: 40px auto; }
+        .admin-box { width: 90%; max-width: 800px; margin: 50px auto; }
         input, textarea { 
-            width: 100%; padding: 15px; margin: 10px 0; 
-            border: 2px solid #000; font-family: inherit; font-size: 1.1rem;
+            width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #000;
+            font-family: inherit; box-sizing: border-box; font-size: 1.1rem;
         }
         button { 
             background: #000; color: #fff; border: none; padding: 20px; 
-            font-weight: 900; cursor: pointer; width: 100%; margin-top: 10px;
+            width: 100%; cursor: pointer; font-weight: 900; margin-top: 10px;
         }
-        #output { 
-            background: #f0f0f0; padding: 20px; border: 1px dashed #000; 
-            margin-top: 30px; white-space: pre-wrap; font-family: monospace; text-transform: none;
-        }
+        button:hover { background: #ff0000; }
     </style>
 </head>
 <body>
     <header>
         <a href="index.html" class="logo-link">Новостное медиа</a>
-        <span class="header-btn" style="background: #eee;">АДМИН</span>
+        <a href="index.html" class="header-btn">НА САЙТ</a>
     </header>
 
-    <main class="admin-container">
-        <h2 class="news-title">Добавить новость</h2>
-        <p style="text-transform: none;">Заполните поля, чтобы получить обновленный код для articles.json</p>
-        
+    <main class="admin-box">
+        <h2 class="news-title">Новая публикация</h2>
         <input type="text" id="title" placeholder="ЗАГОЛОВОК">
-        <input type="text" id="date" placeholder="ДАТА (например, 26.04.2026)">
-        <textarea id="shortDesc" placeholder="КРАТКОЕ ОПИСАНИЕ (для главной)" rows="3"></textarea>
-        <textarea id="fullText" placeholder="ПОЛНЫЙ ТЕКСТ СТАТЬИ" rows="8"></textarea>
-        
-        <button onclick="generateJSON()">СФОРМИРОВАТЬ JSON</button>
-
-        <div id="output-section" style="display:none;">
-            <h3 style="margin-top:40px;">СКОПИРУЙТЕ ЭТО В ARTICLES.JSON:</h3>
-            <div id="output"></div>
-        </div>
+        <input type="text" id="date" placeholder="ДАТА (Напр: 26.04.2026)">
+        <textarea id="short" placeholder="КРАТКОЕ ОПИСАНИЕ" rows="3"></textarea>
+        <textarea id="full" placeholder="ПОЛНЫЙ ТЕКСТ" rows="10"></textarea>
+        <button id="saveBtn">ОПУБЛИКОВАТЬ</button>
     </main>
 
     <script>
-function saveToLocal() {
-    const newArticle = {
-        id: Date.now().toString(),
-        title: document.getElementById('title').value,
-        shortDesc: document.getElementById('shortDesc').value,
-        fullText: document.getElementById('fullText').value,
-        date: document.getElementById('date').value
-    };
+        document.getElementById('saveBtn').onclick = function() {
+            const article = {
+                id: Date.now().toString(),
+                title: document.getElementById('title').value,
+                date: document.getElementById('date').value,
+                shortDesc: document.getElementById('short').value,
+                fullText: document.getElementById('full').value
+            };
 
-    let articles = JSON.parse(localStorage.getItem('my_articles')) || [];
-    articles.push(newArticle);
-    localStorage.setItem('my_articles', JSON.stringify(articles));
+            if (!article.title || !article.fullText) return alert("Заполни поля!");
 
-    alert('Статья добавлена!');
-    window.location.href = 'index.html';
-}
+            const data = JSON.parse(localStorage.getItem('news_data')) || [];
+            data.push(article);
+            localStorage.setItem('news_data', JSON.stringify(data));
+
+            alert("Опубликовано!");
+            window.location.href = 'index.html';
+        };
     </script>
 </body>
 </html>
