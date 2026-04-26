@@ -14,55 +14,58 @@
 </header>
 
 <main id="main-container">
-    <div class="news-feed" id="news-feed">
-        </div>
+    <div class="news-feed" id="news-feed">Загрузка свежих новостей...</div>
 </main>
 
-<footer>
-    18+. МАТЕРИАЛ СОЗДАН ДЛЯ ПУБЛИЧНОГО ИСПОЛЬЗОВАНИЯ
-</footer>
+<footer>18+. МАТЕРИАЛ СОЗДАН ДЛЯ ПУБЛИЧНОГО ИСПОЛЬЗОВАНИЯ</footer>
 
 <script>
-    function renderNews() {
-        const newsFeed = document.getElementById('news-feed');
-        const articles = JSON.parse(localStorage.getItem('news_data')) || [];
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const articleId = urlParams.get('id');
+    const DB_URL = 'https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app/articles.json';
 
-        if (articleId) {
-            // Просмотр конкретной статьи
-            const article = articles.find(a => a.id === articleId);
-            if (article) {
+    async function loadNews() {
+        const newsFeed = document.getElementById('news-feed');
+        try {
+            const response = await fetch(DB_URL);
+            const data = await response.json();
+            
+            // Превращаем объект из Firebase в массив
+            let articles = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleId = urlParams.get('id');
+
+            if (articleId && data[articleId]) {
+                const a = data[articleId];
                 newsFeed.innerHTML = `
-                    <article style="border-bottom: none;">
-                        <div class="article-date">${article.date}</div>
-                        <h1 class="news-title" style="font-size: 3.5rem;">${article.title}</h1>
-                        <p class="news-text full-text">${article.fullText}</p>
-                        <a href="index.html" class="back-link">← НАЗАД К НОВОСТЯМ</a>
+                    <article style="border-bottom:none">
+                        <div class="article-date">${a.date}</div>
+                        <h1 class="news-title" style="font-size:3.5rem">${a.title}</h1>
+                        <p class="news-text full-text">${a.fullText}</p>
+                        <a href="index.html" class="back-link">← НАЗАД</a>
                     </article>`;
                 return;
             }
-        }
 
-        // Главная страница: Новые сверху, лимит 5
-        const displayArticles = [...articles].reverse().slice(0, 5);
+            // Новые сверху, лимит 5
+            articles.reverse();
+            const latest = articles.slice(0, 5);
 
-        if (displayArticles.length === 0) {
-            newsFeed.innerHTML = '<p style="text-align:center; margin-top:50px;">Новостей пока нет.</p>';
-        } else {
-            newsFeed.innerHTML = displayArticles.map(a => `
-                <article>
-                    <div class="article-date">${a.date}</div>
-                    <a href="?id=${a.id}" class="article-link">
-                        <h2 class="news-title">${a.title}</h2>
-                    </a>
-                    <p class="news-text">${a.shortDesc}</p>
-                </article>
-            `).join('');
+            if (latest.length === 0) {
+                newsFeed.innerHTML = '<p style="text-align:center">Новостей нет.</p>';
+            } else {
+                newsFeed.innerHTML = latest.map(a => `
+                    <article>
+                        <div class="article-date">${a.date}</div>
+                        <a href="?id=${a.id}" class="article-link"><h2 class="news-title">${a.title}</h2></a>
+                        <p class="news-text">${a.shortDesc}</p>
+                    </article>
+                `).join('');
+            }
+        } catch (e) {
+            newsFeed.innerHTML = 'Ошибка подключения к базе данных.';
         }
     }
-    renderNews();
+    loadNews();
 </script>
 </body>
 </html>
