@@ -1,4 +1,3 @@
-
 :root {
   --accent: #ff0000;
   --bg: #ffffff;
@@ -125,6 +124,7 @@ footer {
 }
 
 @media (max-width: 768px) {
+  header { flex-direction: column; gap: 15px; }
   .news-title { font-size: 1.6rem; }
   .article-page-title { font-size: 2.2rem; }
 }
