@@ -1,16 +1,18 @@
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Медиановости* — главное</title>
+    <title>М*</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-    <a href="https://4726.vercel.app" class="logo-link">Медиановости*</a>
-    <a href="https://4726.vercel.app/donate" class="header-btn donate-btn">ПОДДЕРЖАТЬ</a>
+    <a href=".." class="logo-link">М*</a>
+    <a href="../donate" class="header-btn donate-btn">ПОДДЕРЖАТЬ</a>
 </header>
 
 <main id="main-container">
@@ -20,7 +22,7 @@
 <footer>18+. МАТЕРИАЛ СОЗДАН ДЛЯ ПУБЛИЧНОГО ИСПОЛЬЗОВАНИЯ</footer>
 
 <script>
-    const DB_URL = 'https://shortener-b6223-default-rtdb.europe-west1.firebasedatabase.app/articles.json';
+    const DB_URL = 'https://upheld-chalice-468113-k6-default-rtdb.europe-west1.firebasedatabase.app/articles';
 
     async function loadNews() {
         const newsFeed = document.getElementById('news-feed');
@@ -28,6 +30,7 @@
             const response = await fetch(DB_URL);
             const data = await response.json();
             
+            // Превращаем объект из Firebase в массив
             let articles = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -36,33 +39,21 @@
             if (articleId && data[articleId]) {
                 const a = data[articleId];
                 newsFeed.innerHTML = `
-                    <article class="single-article">
+                    <article style="border-bottom:none">
                         <div class="article-date">${a.date}</div>
-                        <h1 class="news-title article-page-title">${a.title}</h1>
+                        <h1 class="news-title" style="font-size:3.5rem">${a.title}</h1>
                         <p class="news-text full-text">${a.fullText}</p>
-                        <a href="index.html" class="back-link">← НАЗАД К НОВОСТЯМ</a>
+                        <a href=".." class="back-link">← НАЗАД</a>
                     </article>`;
                 return;
             }
 
+            // Новые сверху, лимит 5
             articles.reverse();
             const latest = articles.slice(0, 5);
 
-            if (latest.length === 0) {
-                newsFeed.innerHTML = '<p style="text-align:center; padding: 50px;">Новостей нет.</p>';
-            } else {
-                newsFeed.innerHTML = latest.map(a => `
-                    <article class="feed-item">
-                        <div class="article-date">${a.date}</div>
-                        <a href="?id=${a.id}" class="article-link">
-                            <h2 class="news-title">${a.title}</h2>
-                        </a>
-                        <p class="news-text">${a.shortDesc}</p>
-                    </article>
-                `).join('');
-            }
         } catch (e) {
-            newsFeed.innerHTML = '<p style="text-align:center; padding: 50px;">Ошибка подключения к базе данных.</p>';
+            newsFeed.innerHTML = 'Ошибка подключения к базе данных.';
         }
     }
     loadNews();
