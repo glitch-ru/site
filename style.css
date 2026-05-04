@@ -20,10 +20,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
   background: var(--bg);
-  z-index: 100;
 }
 
 .logo-link {
@@ -127,9 +124,7 @@ footer {
   font-size: 12px;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
-  header { flex-direction: column; gap: 15px; }
   .news-title { font-size: 1.6rem; }
   .article-page-title { font-size: 2.2rem; }
 }
