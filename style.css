@@ -4,8 +4,20 @@
   --text: #262729;
 }
 
+@font-face {
+  font-family: 'Proto Grotesk';
+  font-weight: 400;
+  src: url('https://storage.googleapis.com/static.istories.media/public/fonts/Proto%20Grotesk-Regular-Web.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Serif';
+  font-weight: 400;
+  src: url('https://storage.googleapis.com/static.istories.media/public/fonts/IBMPlexSerif-400-cyrillic.woff2') format('woff2');
+}
+
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'IBM Plex Serif', serif;
   background: var(--bg);
   color: var(--text);
   margin: 0;
@@ -28,6 +40,7 @@ header {
   font-size: 30px;
   font-weight: 900;
   text-transform: none !important;
+  font-family: 'Proto Grotesk', sans-serif;
 }
 
 .header-btn {
@@ -38,6 +51,7 @@ header {
   border: 1px solid var(--bg);
   color: #ffffff;
   border-radius: 20px;
+  font-family: 'Proto Grotesk', sans-serif;
 }
 
 .donate-btn {
@@ -85,11 +99,13 @@ article {
   font-weight: 900;
   margin: 0 0 15px 0;
   transition: color 0.2s ease;
+  font-family: 'Proto Grotesk', sans-serif;
 }
 
 /* Заголовок на странице самой статьи оставляем крупным */
 .article-page-title {
   font-size: 3.0rem;
+  font-family: 'Proto Grotesk', sans-serif;
 }
 
 .news-text {
@@ -115,6 +131,7 @@ article {
   color: var(--accent);
   text-decoration: none;
   font-weight: 900;
+  font-family: 'Proto Grotesk', sans-serif;
 }
 
 footer {
@@ -157,6 +174,7 @@ footer {
 .method-name {
   font-size: 1.8rem;
   font-weight: 900;
+  font-family: 'Proto Grotesk', sans-serif;
 }
 
 .method-details {
@@ -179,6 +197,7 @@ footer {
   cursor: pointer;
   width: fit-content;
   border-radius: 20px;
+  font-family: 'Proto Grotesk', sans-serif;
 }
 
 .copy-btn:active {
@@ -192,42 +211,3 @@ footer {
   line-height: 1.6;
   margin-bottom: 30px;
 }
-
-  @font-face {
-    font-family: 'Proto Grotesk';
-    font-weight: 400;
-    src: url('fonts/ProtoGrotesk-Regular.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Proto Grotesk';
-    font-weight: 300;
-    src: url('fonts/ProtoGrotesk-Light.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'Proto Grotesk';
-    font-weight: 700;
-    src: url('fonts/ProtoGrotesk-Bold.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'IBM Plex Serif';
-    font-weight: 400;
-    src: url('fonts/IBMPlexSerif-400-cyrillic.woff2') format('woff2'),
-         url('fonts/IBMPlexSerif-400-latin.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'IBM Plex Serif';
-    font-weight: 500;
-    src: url('fonts/IBMPlexSerif-500-cyrillic.woff2') format('woff2'),
-         url('fonts/IBMPlexSerif-500-latin.woff2') format('woff2');
-  }
-
-  @font-face {
-    font-family: 'IBM Plex Serif';
-    font-weight: 600;
-    src: url('fonts/IBMPlexSerif-600-cyrillic.woff2') format('woff2'),
-         url('fonts/IBMPlexSerif-600-latin.woff2') format('woff2');
-  }
