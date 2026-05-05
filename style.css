@@ -11,6 +11,12 @@
 }
 
 @font-face {
+  font-family: 'Proto Grotesk';
+  font-weight: 700;
+  src: url('https://storage.googleapis.com/static.istories.media/public/fonts/Proto%20Grotesk-Bold-Web.woff2') format('woff2');
+}
+
+@font-face {
   font-family: 'IBM Plex Serif';
   font-weight: 400;
   src: url('https://storage.googleapis.com/static.istories.media/public/fonts/IBMPlexSerif-400-cyrillic.woff2') format('woff2');
@@ -38,7 +44,7 @@ header {
   color: var(--bg);
   text-decoration: none;
   font-size: 30px;
-  font-weight: 900;
+  font-weight: 700;
   text-transform: none !important;
   font-family: 'Proto Grotesk', sans-serif;
 }
@@ -46,7 +52,7 @@ header {
 .header-btn {
   text-decoration: none;
   font-size: 16px;
-  font-weight: 900;
+  font-weight: 700;
   padding: 6px 12px;
   border: 1px solid var(--bg);
   color: #ffffff;
@@ -96,7 +102,7 @@ article {
 
 .news-title {
   font-size: 2.2rem; /* Уменьшенный шрифт для главной */
-  font-weight: 900;
+  font-weight: 700;
   margin: 0 0 15px 0;
   transition: color 0.2s ease;
   font-family: 'Proto Grotesk', sans-serif;
@@ -106,6 +112,7 @@ article {
 .article-page-title {
   font-size: 3.0rem;
   font-family: 'Proto Grotesk', sans-serif;
+  font-weight: 700;
 }
 
 .news-text {
@@ -130,7 +137,7 @@ article {
   margin-top: 30px;
   color: var(--accent);
   text-decoration: none;
-  font-weight: 900;
+  font-weight: 700;
   font-family: 'Proto Grotesk', sans-serif;
 }
 
@@ -173,7 +180,7 @@ footer {
 
 .method-name {
   font-size: 1.8rem;
-  font-weight: 900;
+  font-weight: 700;
   font-family: 'Proto Grotesk', sans-serif;
 }
 
@@ -192,7 +199,7 @@ footer {
   color: var(--bg);
   border: none;
   padding: 10px;
-  font-weight: 900;
+  font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
   width: fit-content;
