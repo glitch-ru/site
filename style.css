@@ -23,7 +23,7 @@ header {
 }
 
 .logo-link {
-  color: var(--text);
+  color: var(--white);
   text-decoration: none;
   font-size: 30px;
   font-weight: 900;
@@ -35,8 +35,8 @@ header {
   font-size: 16px;
   font-weight: 900;
   padding: 10px 20px;
-  border: 1px solid var(--text);
-  color: var(--text);
+  border: 1px solid var(--white);
+  color: var(--white);
 }
 
 .donate-btn {
