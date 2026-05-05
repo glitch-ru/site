@@ -36,7 +36,7 @@ header {
   font-weight: 900;
   padding: 10px 20px;
   border: 1px solid var(--white);
-  color: var(--white);
+  color: #ffffff;
 }
 
 .donate-btn {
@@ -174,7 +174,7 @@ footer {
 
 .copy-btn {
   background: #ffffff;
-  color: #000;
+  color: #ffffff;
   border: none;
   padding: 10px;
   font-weight: 900;
