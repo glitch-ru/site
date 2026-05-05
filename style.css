@@ -173,8 +173,8 @@ footer {
 }
 
 .copy-btn {
-  background: var(--text);
-  color: #fff;
+  background: #ffffff;
+  color: #000;
   border: none;
   padding: 10px;
   font-weight: 900;
