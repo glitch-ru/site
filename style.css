@@ -151,11 +151,7 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 15px;
-}
-
-.method-card:hover {
-  border-color: var(--accent);
-  background-color: #fffafb;
+  border-radius: 20px;
 }
 
 .method-name {
@@ -182,10 +178,12 @@ footer {
   text-transform: uppercase;
   cursor: pointer;
   width: fit-content;
+  border-radius: 20px;
 }
 
 .copy-btn:active {
   background: var(--accent);
+  border-radius: 20px;
 }
 
 .support-text {
