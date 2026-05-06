@@ -1,80 +1,190 @@
-
-
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>М*</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Новости</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body{
+      margin:0;
+      background:#252729;
+      font-family:Arial, sans-serif;
+      color:white;
+    }
+
+    header{
+      background:#994146;
+      padding:20px;
+      font-size:32px;
+      font-weight:bold;
+      text-align:center;
+      position:sticky;
+      top:0;
+      z-index:999;
+    }
+
+    .articles{
+      max-width:1200px;
+      margin:auto;
+      padding:20px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:20px;
+    }
+
+    .article{
+      background:white;
+      color:black;
+      border-radius:20px;
+      overflow:hidden;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .article h2{
+      margin-top:0;
+      color:#994146;
+    }
+
+    .date{
+      color:gray;
+      margin-bottom:15px;
+      font-size:14px;
+    }
+
+    .readMore{
+      margin-top:auto;
+      background:#994146;
+      color:white;
+      border:none;
+      padding:12px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.7);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:9999;
+    }
+
+    .modalContent{
+      background:white;
+      color:black;
+      max-width:700px;
+      width:90%;
+      padding:30px;
+      border-radius:20px;
+      max-height:80vh;
+      overflow:auto;
+    }
+
+    .close{
+      float:right;
+      font-size:28px;
+      cursor:pointer;
+    }
+
+    a{
+      color:white;
+      text-decoration:none;
+    }
+
+    .topButtons{
+      display:flex;
+      justify-content:center;
+      gap:15px;
+      margin-top:10px;
+    }
+  </style>
 </head>
 <body>
 
 <header>
-    <a href=".." class="logo-link">М*</a>
-    <a href="../donate" class="header-btn donate-btn">ПОДДЕРЖАТЬ</a>
+  Новости
+
+  <div class="topButtons">
+    <a href="donate.html">Донаты</a>
+    <a href="admin.html">Админка</a>
+  </div>
 </header>
 
-<main id="main-container">
-    <div class="news-feed" id="news-feed"></div>
-</main>
+<div class="articles" id="articles"></div>
 
-<footer>18+. МАТЕРИАЛ СОЗДАН ДЛЯ ПУБЛИЧНОГО ИСПОЛЬЗОВАНИЯ</footer>
+<div class="modal" id="modal">
+  <div class="modalContent">
+    <span class="close" onclick="closeModal()">×</span>
+
+    <h1 id="modalTitle"></h1>
+    <p id="modalDate"></p>
+    <div id="modalText"></div>
+  </div>
+</div>
 
 <script>
-    const DB_URL = 'https://upheld-chalice-468113-k6-default-rtdb.europe-west1.firebasedatabase.app/articles.json';
+const DB = "https://upheld-chalice-468113-k6-default-rtdb.europe-west1.firebasedatabase.app/articles.json";
 
-    async function loadNews() {
-        const newsFeed = document.getElementById('news-feed');
-        try {
-            const response = await fetch(DB_URL);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            
-            const data = await response.json();
-            
-            // Превращаем объект из Firebase в массив
-            let articles = data ? Object.keys(data).map(key => ({...data[key], id: key})) : [];
+async function loadArticles(){
+  const res = await fetch(DB);
+  const data = await res.json();
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const articleId = urlParams.get('id');
+  const container = document.getElementById("articles");
+  container.innerHTML = "";
 
-            if (articleId && data[articleId]) {
-                const a = data[articleId];
-                newsFeed.innerHTML = `
-                    <article style="border-bottom:none">
-                        <div class="article-date">${a.date}</div>
-                        <h1 class="news-title" style="font-size:3.5rem">${a.title}</h1>
-                        <p class="news-text full-text">${a.fullText}</p>
-                        <a href=".." class="back-link">← НАЗАД</a>
-                    </article>`;
-                return;
-            }
+  if(!data) return;
 
-            // Новые сверху, лимит 5
-            articles.reverse();
-            const latest = articles.slice(0, 5);
+  const articles = Object.values(data);
 
-            // Отображаем статьи на странице
-            if (latest.length === 0) {
-                newsFeed.innerHTML = '<p style="text-align: center; padding: 40px;">Статьи отсутствуют</p>';
-            } else {
-                newsFeed.innerHTML = latest.map(article => `
-                    <a href="?id=${article.id}" class="article-link">
-                        <article class="feed-item">
-                            <div class="article-date">${article.date}</div>
-                            <h2 class="news-title">${article.title}</h2>
-                            <p class="news-text">${article.shortDesc}</p>
-                        </article>
-                    </a>
-                `).join('');
-            }
+  // Сначала новые
+  articles.sort((a,b)=>new Date(b.date)-new Date(a.date));
 
-        } catch (e) {
-            console.error('Database error:', e);
-            newsFeed.innerHTML = '<p style="text-align: center; padding: 40px; color: red;">Ошибка подключения к базе данных.</p>';
-        }
-    }
-    loadNews();
+  articles.forEach(article=>{
+
+    const card = document.createElement("div");
+    card.className = "article";
+
+    card.innerHTML = `
+      <h2>${article.title}</h2>
+      <div class="date">${article.date}</div>
+      <p>${article.shortDesc}</p>
+
+      <button class="readMore">
+        Читать
+      </button>
+    `;
+
+    card.querySelector("button").onclick = ()=>{
+      openModal(article);
+    };
+
+    container.appendChild(card);
+  });
+}
+
+function openModal(article){
+  document.getElementById("modal").style.display = "flex";
+
+  document.getElementById("modalTitle").innerText = article.title;
+  document.getElementById("modalDate").innerText = article.date;
+  document.getElementById("modalText").innerText = article.fullText;
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+loadArticles();
 </script>
+
 </body>
 </html>
