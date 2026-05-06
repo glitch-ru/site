@@ -1,58 +1,69 @@
+<!-- donate.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поддержать М*</title>
-    <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Донаты</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body{
+      margin:0;
+      background:#252729;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      font-family:Arial;
+    }
+
+    .donateCard{
+      max-width:500px;
+      width:90%;
+    }
+
+    .DonationCard-module--Wrapper--5843f{
+      padding:40px;
+    }
+
+    .donateBtn{
+      display:block;
+      text-align:center;
+      margin-top:20px;
+      background:white;
+      color:#994146;
+      padding:18px;
+      border-radius:999px;
+      font-weight:bold;
+      text-decoration:none;
+      font-size:20px;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <a href=".." class="logo-link">М*</a>
-    <a href=".." class="header-btn">НА ГЛАВНУЮ</a>
-</header>
+<div class="donateCard">
 
-<main class="donate-container">
-    <h1 class="news-title article-page-title" style="color: var(--accent);">Поддержать проект</h1>
-    
-    <p class="support-text">
-        Ваши пожертвования помогают нам оставаться независимыми, оплачивать хостинг и продолжать работу над материалами. Мы принимаем криптовалюту и прямые переводы.
-    </p>
+  <div class="DonationCard-module--Wrapper--5843f">
 
-    <div class="donate-methods">
-        <div class="method-card">
-            <span class="method-name">БАНКОВСКАЯ КАРТА</span>
-            <div class="method-details" id="card-num">2200 0000 0000 0000</div>
-            <button class="copy-btn" onclick="copyText('card-num')">Копировать номер</button>
-        </div>
-
-        <div class="method-card">
-            <span class="method-name">BITCOIN (BTC)</span>
-            <div class="method-details" id="btc-addr">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</div>
-            <button class="copy-btn" onclick="copyText('btc-addr')">Копировать адрес</button>
-        </div>
-
-        <div class="method-card">
-            <span class="method-name">USDT (TRC-20)</span>
-            <div class="method-details" id="usdt-addr">TX9...your...address...here</div>
-            <button class="copy-btn" onclick="copyText('usdt-addr')">Копировать адрес</button>
-        </div>
+    <div class="DonationCard-module--TitleContainer--39c25">
+      Поддержать проект
     </div>
-</main>
 
-<footer>
-    18+. МАТЕРИАЛ СОЗДАН ДЛЯ ПУБЛИЧНОГО ИСПОЛЬЗОВАНИЯ
-</footer>
+    <div class="DonationCard-module--TextContainer--382b4">
+      Благодаря донатам сайт продолжает работать,
+      публиковать новости и развиваться.
+    </div>
 
-<script>
-    function copyText(id) {
-        const text = document.getElementById(id).innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("Скопировано в буфер обмена");
-        });
-    }
-</script>
+    <a class="donateBtn" href="#">
+      Задонатить
+    </a>
+
+  </div>
+
+</div>
 
 </body>
 </html>
