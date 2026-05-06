@@ -1,120 +1,119 @@
-
+<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>М* Админ</title>
-    <link rel="stylesheet" href="../style.css">
-    <style>
-        .admin-box { width: 90%; max-width: 800px; margin: 50px auto; }
-        .input-group { margin-bottom: 20px; }
-        label { font-weight: 900; display: block; margin-bottom: 5px; font-size: 0.8rem; color: #666; }
-        input, textarea { 
-            width: 100%; padding: 15px; border: 2px solid #000; 
-            font-family: inherit; box-sizing: border-box; font-size: 1.1rem;
-        }
-        input:focus, textarea:focus { border-color: #ff0000; outline: none; }
-        .slug-input { background: #f9f9f9; font-family: monospace; text-transform: lowercase; }
-        button { 
-            background: #000; color: #fff; border: none; padding: 20px; 
-            width: 100%; cursor: pointer; font-weight: 900; font-size: 1.2rem;
-            transition: background 0.2s;
-        }
-        button:hover { background: #ff0000; }
-        .hint { font-size: 0.7rem; text-transform: none; color: #888; margin-top: 5px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ панель</title>
+
+  <style>
+    body{
+      margin:0;
+      background:#252729;
+      color:white;
+      font-family:Arial;
+    }
+
+    .container{
+      max-width:700px;
+      margin:auto;
+      padding:40px;
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:30px;
+    }
+
+    input, textarea{
+      width:100%;
+      padding:15px;
+      margin-bottom:20px;
+      border:none;
+      border-radius:15px;
+      font-size:16px;
+      box-sizing:border-box;
+    }
+
+    textarea{
+      min-height:200px;
+      resize:vertical;
+    }
+
+    button{
+      width:100%;
+      padding:16px;
+      border:none;
+      border-radius:999px;
+      background:#994146;
+      color:white;
+      font-size:18px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    .success{
+      margin-top:20px;
+      text-align:center;
+      color:lightgreen;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <a href=".." class="logo-link">М*</a>
-        <a href=".." class="header-btn">НА САЙТ</a>
-    </header>
 
-    <main class="admin-box">
-        <h2 class="news-title">М*</h2>
-        
-        <div class="input-group">
-            <label>ЗАГОЛОВОК</label>
-            <input type="text" id="title" placeholder="Введите название статьи">
-        </div>
+<div class="container">
+  <h1>Админ панель</h1>
 
-        <div class="input-group">
-            <label>URL-АДРЕС (SLUG)</label>
-            <input type="text" id="slug" class="slug-input" placeholder="example-news-id">
-            <div class="hint">Только латиница, цифры и дефис. Если пусто — создастся из заголовка.</div>
-        </div>
+  <input id="title" placeholder="Заголовок">
 
-        <div class="input-group">
-            <label>ДАТА</label>
-            <input type="text" id="date" placeholder="26.04.2026">
-        </div>
+  <input id="shortDesc" placeholder="Краткое описание">
 
-        <div class="input-group">
-            <label>КРАТКОЕ ОПИСАНИЕ (ДЛЯ ЛЕНТЫ)</label>
-            <textarea id="short" rows="3" placeholder="Пара предложений для главной страницы"></textarea>
-        </div>
+  <textarea id="fullText" placeholder="Полный текст"></textarea>
 
-        <div class="input-group">
-            <label>ПОЛНЫЙ ТЕКСТ</label>
-            <textarea id="full" rows="10" placeholder="Основное содержание статьи"></textarea>
-        </div>
+  <button onclick="publishArticle()">
+    Опубликовать
+  </button>
 
-        <button onclick="publish()">ОПУБЛИКОВАТЬ</button>
-    </main>
+  <div class="success" id="success"></div>
+</div>
 
-    <script>
-        const DB_BASE = 'https://upheld-chalice-468113-k6-default-rtdb.europe-west1.firebasedatabase.app/articles';
+<script>
+const DB = "https://upheld-chalice-468113-k6-default-rtdb.europe-west1.firebasedatabase.app/articles.json";
 
-        // Авто-генерация слага из заголовка (на случай если поле пустое)
-        function generateSlug(text) {
-            const rus = 'а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я'.split(' ');
-            const eng = 'a b v g d e e zh z i y k l m n o p r s t u f h ts ch sh shch y e yu ya'.split(' ');
-            return text.toLowerCase().split('').map(char => {
-                const index = rus.indexOf(char);
-                return index !== -1 ? eng[index] : char;
-            }).join('').replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-        }
+async function publishArticle(){
 
-        async function publish() {
-            const titleEl = document.getElementById('title');
-            const slugEl = document.getElementById('slug');
-            
-            // Если слаг не введен вручную, генерируем его
-            let finalSlug = slugEl.value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-');
-            if (!finalSlug) {
-                finalSlug = generateSlug(titleEl.value);
-            }
+  const title = document.getElementById("title").value;
+  const shortDesc = document.getElementById("shortDesc").value;
+  const fullText = document.getElementById("fullText").value;
 
-            if (!titleEl.value || !finalSlug) {
-                return alert("Нужен заголовок или корректный SLUG");
-            }
+  if(!title || !shortDesc || !fullText){
+    alert("Заполни все поля");
+    return;
+  }
 
-            const article = {
-                title: titleEl.value,
-                date: document.getElementById('date').value,
-                shortDesc: document.getElementById('short').value,
-                fullText: document.getElementById('full').value
-            };
+  const article = {
+    title,
+    shortDesc,
+    fullText,
+    date:new Date().toLocaleString("ru-RU")
+  };
 
-            try {
-                // Используем PUT по адресу конкретного слага
-                const response = await fetch(`${DB_BASE}/${finalSlug}.json`, {
-                    method: 'PUT',
-                    body: JSON.stringify(article)
-                });
+  await fetch(DB,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(article)
+  });
 
-                if (response.ok) {
-                    alert(`Готово! Ссылка: ?id=${finalSlug}`);
-                    window.location.href = '..';
-                } else {
-                    alert("Ошибка при сохранении");
-                }
-            } catch (e) {
-                console.error(e);
-                alert("Нет связи с базой данных");
-            }
-        }
-    </script>
+  document.getElementById("success").innerText =
+    "Статья опубликована";
+
+  document.getElementById("title").value = "";
+  document.getElementById("shortDesc").value = "";
+  document.getElementById("fullText").value = "";
+}
+</script>
+
 </body>
 </html>
